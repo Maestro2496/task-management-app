@@ -1,5 +1,5 @@
 import {Fragment, useState} from "react";
-import {Dialog, Menu, Transition} from "@headlessui/react";
+import {Dialog, Transition} from "@headlessui/react";
 import {
   CalendarIcon,
   ChartBarIcon,
@@ -9,9 +9,11 @@ import {
   UsersIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import Button from "../buttons";
-import Header from "./Header";
-import Sidebar from "./Sidebar";
+
+import Header from "./header";
+import Sidebar from "./sidebar";
+import Main from "./main";
+import SidebarShowBtn from "./sidebarShowBtn";
 
 const navigation = [
   {name: "Dashboard", href: "#", icon: HomeIcon, current: true},
@@ -21,21 +23,18 @@ const navigation = [
   {name: "Documents", href: "#", icon: InboxIcon, current: false},
   {name: "Reports", href: "#", icon: ChartBarIcon, current: false},
 ];
-const userNavigation = [
-  {name: "Your Profile", href: "#"},
-  {name: "Settings", href: "#"},
-  {name: "Sign out", href: "#"},
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-
+//hide the sidebar
+//Update the marginleft  of the header and the main to be 0%
 export default function Example() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <>
+      <SidebarShowBtn />
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="relative z-40 md:hidden" onClose={setSidebarOpen}>
@@ -125,25 +124,11 @@ export default function Example() {
           </Dialog>
         </Transition.Root>
 
-        {/* Static sidebar for desktop */}
-        <div className="hidden md:flex md:w-[22%] md:flex-col md:fixed md:inset-y-0">
-          {/* Sidebar component, swap this element with another sidebar if you like */}
-          <Sidebar />
-        </div>
+        <Sidebar />
+
         <Header />
 
-        <main className=" md:ml-[22%] my-auto h-[41.2rem] bg-[#E4EBFA] flex items-center justify-center ">
-          <div className="flex flex-col space-y-4">
-            <p className="text-gray-500 font-bold">
-              This board is empty. Create a new column to get started.
-            </p>
-            <div className="flex justify-center items-center">
-              <button className="bg-primary  hover:bg-primary-hover py-2 px-6 rounded-full text-[15px] h-12 text-white">
-                + Add New Column
-              </button>
-            </div>
-          </div>
-        </main>
+        <Main />
       </div>
     </>
   );
