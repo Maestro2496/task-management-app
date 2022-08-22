@@ -1,11 +1,17 @@
-import Dashboard from "./components/dashboard";
+import {boards} from "./data";
+
 import "./App.css";
+import React from "react";
+import {Outlet} from "react-router-dom";
+export const BoardContext = React.createContext();
 
 function App() {
   return (
-    <div className="font-jakarta">
-      <Dashboard />
-    </div>
+    <BoardContext.Provider value={boards}>
+      <div className="font-jakarta">
+        <Outlet />
+      </div>
+    </BoardContext.Provider>
   );
 }
 

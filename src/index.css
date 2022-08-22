@@ -2,3 +2,25 @@
 @tailwind base;
 @tailwind components;
 
+*::-webkit-scrollbar {
+  display: none;
+}
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+input[type="checkbox"]:after {
+  content: "\f00c";
+  font-family: "Font Awesome 5 free";
+  font-weight: 900;
+  color: white;
+  display: none;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #635fc7;
+}
+input[type="checkbox"]:checked::after {
+  display: block;
+}

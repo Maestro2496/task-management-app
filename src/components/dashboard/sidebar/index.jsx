@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useContext, useMemo} from "react";
+import {NavLink, useLocation} from "react-router-dom";
 import "./Sidebar.scss";
 import {useDispatch} from "react-redux/";
 import Iconboard from "../../../assets/IconBoard";
@@ -10,6 +11,7 @@ import Toggle from "./Toggle";
 import HideSidebar from "../../../assets/HideSidebar";
 import LogoDark from "../../../assets/LogoDark";
 import {hide} from "../../../features/sidebar";
+import {BoardContext} from "../../../App";
 const navigation = [
   {name: "Platform Launch", href: "#", icon: Iconboard, current: true},
   {name: "Marketing Plan", href: "#", icon: Iconboard, current: false},
@@ -41,13 +43,15 @@ const HideSidebarButton = () => {
 };
 export default function Sidebar() {
   const sidebar = useSelector((state) => state.sidebar);
+  let boards = useContext(BoardContext);
+  const location = useLocation();
 
   return (
     <div
       className={clsx(
-        "transition-all duration-700 fixed inset-y-0 h-full flex flex-col w-[22%] ",
+        " z-[100] transition-all duration-700 fixed inset-y-0 h-full flex flex-col w-[22%] ",
         sidebar === "show"
-          ? "z-50 translate-x-0 opacity-100"
+          ? "z-40 translate-x-0 opacity-100"
           : "-translate-x-[100%] -z-10 opacity-0"
       )}
     >
@@ -56,30 +60,39 @@ export default function Sidebar() {
         <div className="flex-grow mt-5 flex flex-col ">
           <nav className="flex-1 pr-2 pb-4">
             <div className="ml-4 py-4 text-[0.9375rem] text-gray-700 tracking-wide font-semibold opacity-50">
-              All BOARDS (3)
+              All BOARDS ({boards.length})
             </div>
             <ul className="">
-              {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-primary"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                    "group rounded-r-full py-5 px-4 flex items-center text-sm font-medium space-x-3 "
-                  )}
+              {boards.map((board) => (
+                <NavLink
+                  to={`/boards/${board.href}`}
+                  key={board.name}
+                  href={board.name}
+                  /*  style={({isActive}) => ({
+                    backgroundColor: isActive ? "lightblue" : "teal",
+                  })} */
+                  className={({isActive}) => {
+                    return (
+                      " group rounded-r-full py-5 px-4 flex items-center text-sm font-medium space-x-3 text-black hover:text-gray-900 " +
+                      (isActive ? "bg-primary" : "bg-white")
+                    );
+                  }}
                 >
-                  <item.icon fill={item.current ? "white" : "gray"} aria-hidden="true" />
+                  <Iconboard
+                    fill={board.href === location.pathname.split("/")[2] ? "white" : "gray"}
+                    aria-hidden="true"
+                  />
                   <p
-                    className={classNames(
+                    className={clsx(
                       "text-[0.9375rem]",
-                      item.current ? "text-white" : "text-gray-700"
+                      board.href === location.pathname.split("/")[2]
+                        ? "text-white"
+                        : "text-gray-900"
                     )}
                   >
-                    {item.name}
+                    {board.name}
                   </p>
-                </a>
+                </NavLink>
               ))}
             </ul>
 
