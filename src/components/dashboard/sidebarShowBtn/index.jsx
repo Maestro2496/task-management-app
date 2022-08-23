@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React from "react";
 import {useSelector, useDispatch} from "react-redux";
 import ShowSidebar from "../../../assets/ShowSidebar";
-import {show} from "../../../features/sidebar";
+import {show} from "../../../store/features/sidebar";
 export default function SidebarShowBtn() {
   const sidebar = useSelector((state) => state.sidebar);
   const dispatch = useDispatch();

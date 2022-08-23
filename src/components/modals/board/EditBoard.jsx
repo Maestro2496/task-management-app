@@ -1,19 +1,19 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment, useState} from "react";
+import {Fragment} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {XIcon} from "@heroicons/react/outline";
-import SelectMenu from "../SelectMenu";
+import {useSelector, useDispatch} from "react-redux/";
+import {CustomInput1} from "../../Input";
 
-import CustomInput from "../../Input";
-import CustomTextArea from "../../TextArea";
 import SubTask from "../../SubTask";
-import IconCross from "../../../assets/IconCross";
+import {hideEditBoard} from "../../../store/features/modals";
 
 export default function EditBoard() {
-  const [open, setOpen] = useState(true);
+  const dispatch = useDispatch();
+  const open = useSelector((state) => state.modals.board.edit);
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-[120]" onClose={setOpen}>
+      <Dialog as="div" className="relative z-[120]" onClose={() => void dispatch(hideEditBoard())}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -42,7 +42,7 @@ export default function EditBoard() {
                   <h2 className="font-bold text-lg">Edit Board</h2>
                 </div>
                 <div className="space-y-4 mt-2">
-                  <CustomInput
+                  <CustomInput1
                     type="text"
                     name="title"
                     label="Board Name"

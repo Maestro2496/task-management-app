@@ -1,18 +1,21 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {boards} from "../../../data";
+import {v4} from "uuid";
 
-const initialState = [];
+const initialState = boards;
 
 const boardReducer = createSlice({
   initialState,
-  name: "board",
-  reducer: {
-    add: (boards, action) => {
-      //columns = [{name:'', tasks:[]}]
-      const {name, columns} = action.payload;
-      const href = name.replace(" ", "");
-      boards.push({name, href, columns});
+  name: "boards",
+  reducers: {
+    addNewBoard: (boards, action) => {
+      console.log("Eddy");
+      const id = v4();
+      const {boardName, columns} = action.payload;
+      const href = boardName.replace(" ", "");
+      boards.push({id, name: boardName, href, columns});
     },
-    editName: (boards, action) => {
+    editBoardName: (boards, action) => {
       const {boardId, name} = action.payload;
       const newBoards = boards.map((board) => {
         if (board.id === boardId) {
@@ -51,12 +54,44 @@ const boardReducer = createSlice({
       //Find and delete the column name
       board.columns = board.columns.filter((column) => column.id !== columnId);
     },
-    delete: (boards, action) => {
+    deleteBoard: (boards, action) => {
       const {boardId} = action.payload;
       const newBoard = boards.filter((board) => board.id !== boardId);
       return newBoard;
     },
+    addTask: (boards, action) => {
+      const {boardHref, status, taskTitle, taskDesc, subtasks} = action.payload;
+      //Find the board
+      const board = boards.find((board) => board.href === boardHref);
+      //Find the column
+      const column = board.columns.find((column) => column.name === status);
+
+      //Add a new Task
+      column.tasks.push({title: taskTitle, description: taskDesc, status: column.name, subtasks});
+    },
+    editTask: (boards, action) => {
+      const {boardHref, columnId, taskId, taskTitle, taskDesc, subtasks} = action.payload;
+      //Find the board
+      const board = boards.find((board) => board.href === boardHref);
+      //Find the column
+      const column = board.columns.find((column) => column.id === columnId);
+
+      //Add a new Task
+      column.tasks = column.tasks.map((task) => {
+        if (task.id === taskId) {
+          return {
+            ...task,
+            ...(taskTitle && {title: taskTitle}),
+            ...(taskDesc && {description: taskDesc}),
+            ...(subtasks && {subtasks}),
+          };
+        }
+        return task;
+      });
+    },
   },
 });
 
+export const {addNewBoard, editBoardName, addColumn, editColumnName, deleteColumn, deleteBoard,addTask} =
+  boardReducer.actions;
 export default boardReducer.reducer;

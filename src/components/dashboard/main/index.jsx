@@ -1,26 +1,37 @@
 import clsx from "clsx";
-import React, {useContext, useMemo, useState} from "react";
+import React, {useMemo, useState} from "react";
 import TaskDescription from "../../modals/task/TaskDescription";
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import {BoardContext} from "../../../App";
-import "./Main.scss";
-import AddBoard from "../../modals/board/AddBoard";
-import EditBoard from "../../modals/board/EditBoard";
 
-const Column = () => {
-  <div></div>;
-};
+import EditTask from "../../modals/task/EditTask";
+import DeleteTask from "../../modals/task/DeleteTask";
+
 const Task = ({task}) => {
-  const [open, setOpen] = useState(false);
+  const [openTaskDesc, setOpenTaskDesc] = useState(false);
+  const [openEditTask, setOpenEditTask] = useState(false);
+  const [openDeleteTask, setOpenDeleteTask] = useState(false);
   const taskCompleted = useMemo(() => {
     return task.subtasks.filter((subtask) => subtask.isCompleted).length;
   }, [task.subtasks]);
   return (
     <>
-      <TaskDescription open={open} setOpen={setOpen} task={task} taskCompleted={taskCompleted} />
+      <DeleteTask
+        open={openDeleteTask}
+        setOpen={setOpenDeleteTask}
+        setOpenTaskDesc={setOpenTaskDesc}
+      />
+      <EditTask open={openEditTask} setOpen={setOpenEditTask} setOpenTaskDesc={setOpenTaskDesc} />
+      <TaskDescription
+        open={openTaskDesc}
+        setOpen={setOpenTaskDesc}
+        task={task}
+        taskCompleted={taskCompleted}
+        setOpenDeleteTask={setOpenDeleteTask}
+        setOpenEditTask={setOpenEditTask}
+      />
       <div
-        onClick={() => setOpen(true)}
+        onClick={() => setOpenTaskDesc(true)}
         className=" py-6 px-3 bg-slate-50 shadow-lg rounded-md cursor-pointer"
       >
         <p className="font-bold text-black">{task.title}</p>
@@ -32,22 +43,21 @@ const Task = ({task}) => {
 export default function TaskBoard() {
   const sidebar = useSelector((state) => state.sidebar);
   const params = useParams();
-  let boards = useContext(BoardContext);
+  let boards = useSelector((state) => state.boards);
 
-  const tasks = useMemo(() => {
+  const board = useMemo(() => {
     return boards.find((board) => board.href === params.boardId);
   }, [boards, params.boardId]);
 
   return (
     <>
-      <EditBoard/>
       <div
         className={clsx(
-          "flex w-full space-x-4 relative z-40  h-full pt-8 pb-8 pr-8",
-          sidebar === "show" ? "pl-8" : "pl-12"
+          "transition-all duration-700 border border-red-500 bg-[#E4EBFA] flex w-full space-x-4 relative z-40  h-full pt-8 pb-8 pr-8",
+          sidebar === "show" ? "ml-[22%] pl-8" : "ml-0 pl-12"
         )}
       >
-        {tasks.columns.map((column) => {
+        {board.columns.map((column) => {
           return (
             <div
               key={column.name}
@@ -65,48 +75,7 @@ export default function TaskBoard() {
             </div>
           );
         })}
-        {/*  <div className="w-[22rem] h-full rounded-md  p-4 flex flex-col space-y-4 bg-transparent">
-          <div className="flex space-x-3 justify-start items-center">
-            <div className="rounded-full w-3 h-3 bg-teal-500" />
-            <span>TODO (6)</span>
-          </div>
-          <div className="flex flex-col space-y-3 overflow-y-scroll">
-            <Task />
-            <Task />
-            <Task />
-            <Task />
-          </div>
-        </div>
-        <div className="w-[22rem] h-full rounded-md  p-4 flex flex-col space-y-4 bg-transparent">
-          <div className="flex space-x-3 justify-start items-center">
-            <div className="rounded-full w-3 h-3 bg-purple-500" />
-            <span>DOING (6)</span>
-          </div>
-          <div className="flex flex-col space-y-3 overflow-y-scroll">
-            <Task />
-            <Task />
-            <Task />
-            <Task />
-            <Task />
-            <Task />
-            <Task />
-          </div>
-        </div>
-        <div className="w-[22rem] h-full rounded-md  p-4 flex flex-col space-y-4 bg-transparent">
-          <div className="flex space-x-3 justify-start items-center">
-            <div className="rounded-full w-3 h-3 bg-green-500" />
-            <span>DONE (6)</span>
-          </div>
-          <div className="flex flex-col space-y-3 overflow-y-scroll">
-            <Task />
-            <Task />
-            <Task />
-            <Task />
-            <Task />
-            <Task />
-            <Task />
-          </div>
-        </div> */}
+
         <div className="w-[22rem] h-full flex items-center justify-center">
           <p className="bg-[#E4EBFA] mt-8 h-[86%] w-full flex justify-center items-center rounded-md shadow-lg">
             + New Column

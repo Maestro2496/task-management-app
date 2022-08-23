@@ -1,19 +1,22 @@
 import clsx from "clsx";
-import React, {useState} from "react";
-import {useSelector} from "react-redux";
+import React from "react";
+import {useSelector, useDispatch} from "react-redux";
 import {useLocation} from "react-router-dom";
 import LogoDark from "../../../assets/LogoDark";
-import VerticalEllipsis from "../../../assets/VerticalEllipsis";
+import {showAddTask} from "../../../store/features/modals";
+import BoardDropDown from "../../dropdown/Board";
 import AddTask from "../../modals/task/AddTask";
 
 //Update the left margin
 export default function Header() {
-  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
   const sidebar = useSelector((state) => state.sidebar);
+
   const location = useLocation();
   return (
     <>
-      <AddTask open={open} setOpen={setOpen} />
+      <AddTask />
+
       <div
         className={clsx(
           "transition-all duration-700 border-b border-3 bg-white z-40 fixed right-0 left-0 h-[6.1rem] px-8  flex items-center justify-between",
@@ -46,13 +49,13 @@ export default function Header() {
         </div>
         <div className="flex space-x-6 items-center justify-center ">
           <button
-            onClick={() => setOpen(true)}
+            onClick={() => void dispatch(showAddTask())}
             className="rounded-full py-3 px-6 bg-[#635FC7] hover:opacity-50  text-white"
           >
             + Add New Task
           </button>
           <div>
-            <VerticalEllipsis />
+            <BoardDropDown />
           </div>
         </div>
       </div>

@@ -2,12 +2,13 @@
 import {Fragment} from "react";
 import {Menu, Transition} from "@headlessui/react";
 import {DotsVerticalIcon} from "@heroicons/react/solid";
-
+import {useDispatch, useSelector} from "react-redux";
+import {showDeleteTask, showEditTask} from "../../store/features/modals";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function DropDown({setOpen}) {
+export default function TaskDropDown({setOpenEditTask, setOpenDeleteTask, setOpenTaskDesc}) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -30,21 +31,27 @@ export default function DropDown({setOpen}) {
           <div className="py-1">
             <Menu.Item>
               {({active}) => (
-                <a
-                  href="#w"
+                <button
+                  onClick={() => {
+                    setOpenEditTask(true);
+                    setOpenTaskDesc(false);
+                  }}
                   className={classNames(
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
                 >
                   Edit Task
-                </a>
+                </button>
               )}
             </Menu.Item>
             <Menu.Item>
               {({active}) => (
                 <button
-                  onClick={() => setOpen(true)}
+                  onClick={() => {
+                    setOpenDeleteTask(true);
+                    setOpenTaskDesc(false);
+                  }}
                   className={classNames(
                     active ? "bg-gray-100 text-red-900" : "text-red-700",
                     "block px-4 py-2 text-sm"

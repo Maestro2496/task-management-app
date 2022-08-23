@@ -4,15 +4,23 @@ import {Dialog, Transition} from "@headlessui/react";
 
 import SelectMenu from "../SelectMenu";
 
-import CustomInput from "../../Input";
+import {CustomInput1, CustomInput2} from "../../Input";
 import CustomTextArea from "../../TextArea";
 import SubTask from "../../SubTask";
 import IconCross from "../../../assets/IconCross";
 
-export default function EditTask({open, setOpen}) {
+
+export default function EditTask({open, setOpen, setOpenTaskDesc}) {
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-[120]" onClose={setOpen}>
+      <Dialog
+        as="div"
+        className="relative z-[120]"
+        onClose={() => {
+          setOpen(false);
+          setOpenTaskDesc(true);
+        }}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -41,7 +49,7 @@ export default function EditTask({open, setOpen}) {
                   <h2 className="font-bold text-lg">Edit task</h2>
                 </div>
                 <div className="space-y-4">
-                  <CustomInput
+                  <CustomInput1
                     type="text"
                     name="title"
                     label="Title"
@@ -54,7 +62,7 @@ export default function EditTask({open, setOpen}) {
                   />
                   <div className="space-y-4">
                     <h2>Subtasks</h2>
-                    <div className="flex space-x-3 items-center pr-2">
+                    {/* <div className="flex space-x-3 items-center pr-2">
                       <SubTask
                         className="h-9 border border-red-500 p-2"
                         placeholder="e.g Eddy the great guy"
@@ -70,7 +78,7 @@ export default function EditTask({open, setOpen}) {
                     </div>
                     <button className="w-full font-semibold bg-[#635FC740] py-2 rounded-full text-indigo-900">
                       + Add new Subtask
-                    </button>
+                    </button> */}
                   </div>
                 </div>
 

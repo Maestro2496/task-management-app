@@ -2,15 +2,21 @@
 import {Fragment, useRef, useState} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {CheckIcon} from "@heroicons/react/outline";
-
+import {useSelector, useDispatch} from "react-redux";
+import {hideDeleteBoard} from "../../../store/features/modals";
 export default function DeleteBoard() {
-  const [open, setOpen] = useState(true);
-
+  const open = useSelector((state) => state.modals.board.delete);
+  const dispatch = useDispatch();
   const cancelButtonRef = useRef(null);
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setOpen}>
+      <Dialog
+        as="div"
+        className="relative z-50"
+        initialFocus={cancelButtonRef}
+        onClose={() => void dispatch(hideDeleteBoard())}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -58,7 +64,7 @@ export default function DeleteBoard() {
                     }}
                     type="button"
                     className="w-full inline-flex justify-center rounded-full border border-transparent shadow-sm px-4 py-2 text-base font-medium text-indigo-800 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-                    onClick={() => setOpen(false)}
+                    onClick={() => void dispatch(hideDeleteBoard())}
                   >
                     Cancel
                   </button>
@@ -68,7 +74,7 @@ export default function DeleteBoard() {
                     }}
                     type="button"
                     className="text-white mt-3 w-full inline-flex justify-center rounded-full border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-                    onClick={() => setOpen(false)}
+                    onClick={() => void dispatch(hideDeleteBoard())}
                     ref={cancelButtonRef}
                   >
                     Delete

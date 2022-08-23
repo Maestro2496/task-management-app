@@ -1,19 +1,20 @@
 import clsx from "clsx";
-export default function CustomTextArea({label, className, type, name, placeholder}) {
+import {useField} from "formik/";
+export default function CustomTextArea({label, ...props}) {
+  const [field, meta] = useField(props);
   return (
     <div>
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+      <label htmlFor={props.name} className="block text-sm font-medium text-gray-700">
         {label}
       </label>
       <div className="mt-2">
         <textarea
-          name={name}
-          id={name}
+          {...field}
+          {...props}
           className={clsx(
             "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md",
-            className
+            props.className
           )}
-          placeholder={placeholder}
         />
       </div>
     </div>
