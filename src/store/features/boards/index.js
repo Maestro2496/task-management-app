@@ -94,6 +94,7 @@ const boardReducer = createSlice({
           return task;
         });
       } else {
+        
         //Add the task to the new column and delete from the prev
         currentColumn.tasks.push({
           id: taskId,
@@ -106,7 +107,6 @@ const boardReducer = createSlice({
       }
     },
     deleteTask: (boards, action) => {
-      console.log("Calleed");
       const {boardHref, columnName, taskId} = action.payload;
       //Find the board
       const board = boards.find((board) => board.href === boardHref);

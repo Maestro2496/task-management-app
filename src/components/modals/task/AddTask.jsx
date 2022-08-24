@@ -12,6 +12,7 @@ import {v4} from "uuid";
 import {hideAddTask} from "../../../store/features/modals";
 import {XIcon} from "@heroicons/react/outline";
 import {addTask} from "../../../store/features/boards";
+
 const initialValues = {
   taskTitle: "",
   taskDesc: "",
@@ -71,7 +72,6 @@ export default function AddTask() {
                 <Formik
                   initialValues={initialValues}
                   onSubmit={(values) => {
-                    console.log(values);
                     dispatch(
                       addTask({
                         boardHref,
@@ -81,6 +81,7 @@ export default function AddTask() {
                         subtasks: values.subtasks,
                       })
                     );
+                    dispatch(hideAddTask());
                   }}
                 >
                   {(props) => {

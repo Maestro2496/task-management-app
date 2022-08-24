@@ -1,21 +1,34 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment} from "react";
+import {Fragment, useMemo} from "react";
 import clsx from "clsx";
 import {Dialog, Transition} from "@headlessui/react";
-
-import SelectMenu from "../SelectMenu";
-
+import {Formik, Form} from "formik";
+import {useLocation} from "react-router-dom";
+import SelectMenu from "./SelectMenu";
+import {useSelector, useDispatch} from "react-redux";
 import TaskDropDown from "../../dropdown/Task";
+import {editTask} from "../../../store/features/boards";
 
+export default function TaskDescription({open, setOpen, task, setOpenEditTask, setOpenDeleteTask}) {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const boardHref = location.pathname.split("/")[2];
+  const boards = useSelector((state) => state.boards);
+  const taskStatus = useMemo(() => {
+    let status = [];
+    const board = boards.find((board) => board.href === boardHref);
+    if (board) {
+      status = board.columns.map((column) => column.name);
+    }
+    return status;
+  }, [boards, boardHref]);
 
-export default function TaskDescription({
-  open,
-  setOpen,
-  task,
-  taskCompleted,
-  setOpenEditTask,
-  setOpenDeleteTask,
-}) {
+  const initialValues = useMemo(() => {
+    return {
+      subtasks: task.subtasks,
+      status: task.status,
+    };
+  }, [task]);
   return (
     <>
       <Transition.Root show={open} as={Fragment}>
@@ -44,51 +57,116 @@ export default function TaskDescription({
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
                 <Dialog.Panel className="flex flex-col space-y-4 relative bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:max-w-md sm:w-full sm:p-6">
-                  <div className="pr-2 flex justify-between items-center ">
-                    <h2 className="font-bold w-2/3 ">{task.title}</h2>
-                    <TaskDropDown
-                      setOpenDeleteTask={setOpenDeleteTask}
-                      setOpenEditTask={setOpenEditTask}
-                      setOpenTaskDesc={setOpen}
-                    />
-                  </div>
-
-                  <p className="text-sm text-[#828FA3]">{task.description}</p>
-                  <div className="flex flex-col space-y-4">
-                    <h3 className="text-[#828FA3] text-sm font-semibold">{`Subtasks (${taskCompleted} of ${task.subtasks.length} )`}</h3>
-                    <div className="space-y-2 flex flex-col items-center justify-center">
-                      {task.subtasks.map((subtask) => (
-                        <div
-                          key={subtask.title}
-                          className="w-full p-2 bg-[#F4F7FD] flex items-center justify-start space-x-2 rounded-md hover:bg-[#635FC7]/25 cursor-pointer"
-                        >
-                          <div className="flex items-center justify-center">
-                            <input
-                              id={subtask.title}
-                              name={subtask.title}
-                              defaultChecked={subtask.isCompleted}
-                              type="checkbox"
-                              className="appearance-none  flex items-center justify-center focus:ring-indigo-500 h-5 w-5 text-[#635FC7] border border-gray-700 bg-white rounded checked:bg-primary"
+                  <Formik
+                    initialValues={initialValues}
+                    onSubmit={(values) => {
+                      dispatch(
+                        editTask({
+                          boardHref,
+                          currentColName: values.status,
+                          taskId: task.id,
+                          taskTitle: task.title,
+                          taskDesc: task.description,
+                          subtasks: values.subtasks,
+                          prevColName: task.status,
+                        })
+                      );
+                    }}
+                  >
+                    {({values, setFieldValue}) => {
+                      const taskCompleted = values.subtasks.filter(
+                        (task) => task.isCompleted
+                      ).length;
+                      return (
+                        <Form>
+                          <div className="pr-2 flex justify-between items-center ">
+                            <h2 className="font-bold w-2/3 ">{task.title}</h2>
+                            <TaskDropDown
+                              setOpenDeleteTask={setOpenDeleteTask}
+                              setOpenEditTask={setOpenEditTask}
+                              setOpenTaskDesc={setOpen}
                             />
                           </div>
+                          <p className="text-sm text-[#828FA3]">{task.description}</p>
+                          <div className="flex flex-col space-y-4">
+                            <h3 className="text-[#828FA3] text-sm font-semibold">{`Subtasks (${taskCompleted} of ${values.subtasks.length} )`}</h3>
+                            <div className="space-y-2 flex flex-col items-center justify-center">
+                              {values.subtasks.map((subtask) => (
+                                <div
+                                  key={subtask.title}
+                                  className="w-full p-2 bg-[#F4F7FD] flex items-center justify-start space-x-2 rounded-md hover:bg-[#635FC7]/25 cursor-pointer"
+                                >
+                                  <div className="flex items-center justify-center">
+                                    <input
+                                      id={subtask.title}
+                                      name={subtask.title}
+                                      defaultChecked={subtask.isCompleted}
+                                      onChange={(event) => {
+                                        if (event.target.checked) {
+                                          setFieldValue(
+                                            "subtasks",
+                                            values.subtasks.map((subt) => {
+                                              if (subt.id === subtask.id) {
+                                                return {
+                                                  ...subt,
+                                                  isCompleted: true,
+                                                };
+                                              }
+                                              return subt;
+                                            })
+                                          );
+                                        } else {
+                                          setFieldValue(
+                                            "subtasks",
+                                            values.subtasks.map((subt) => {
+                                              if (subt.id === subtask.id) {
+                                                return {
+                                                  ...subt,
+                                                  isCompleted: false,
+                                                };
+                                              }
+                                              return subt;
+                                            })
+                                          );
+                                        }
+                                      }}
+                                      type="checkbox"
+                                      className="appearance-none  flex items-center justify-center focus:ring-indigo-500 h-5 w-5 text-[#635FC7] border border-gray-700 bg-white rounded checked:bg-primary"
+                                    />
+                                  </div>
 
-                          <p
-                            className={clsx(
-                              subtask.isCompleted
-                                ? "line-through decoration-gray-600 decoration-1 text-gray-500"
-                                : ""
-                            )}
+                                  <p
+                                    className={clsx(
+                                      subtask.isCompleted
+                                        ? "line-through decoration-gray-600 decoration-1 text-gray-500"
+                                        : ""
+                                    )}
+                                  >
+                                    {subtask.title}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="w-full flex flex-col space-y-4">
+                            <h3 className="text-[#828FA3] text-sm font-semibold">Current Status</h3>
+                            <SelectMenu
+                              currentStatus={task.status}
+                              taskStatus={taskStatus}
+                              setFieldValue={setFieldValue}
+                            />
+                          </div>
+                          <button
+                            style={{backgroundColor: "#625FC7"}}
+                            type="submit"
+                            className="mt-2 rounded-md text-white w-full  text-center bg-primary px-2 py-1"
                           >
-                            {subtask.title}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="w-full flex flex-col space-y-4">
-                    <h3 className="text-[#828FA3] text-sm font-semibold">Current Status</h3>
-                    <SelectMenu currentStatus={task.status} />
-                  </div>
+                            Confirm changes
+                          </button>
+                        </Form>
+                      );
+                    }}
+                  </Formik>
                 </Dialog.Panel>
               </Transition.Child>
             </div>

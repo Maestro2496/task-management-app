@@ -85,7 +85,7 @@ export default function TaskBoard() {
               ) : (
                 <div className="flex flex-col space-y-3 overflow-y-scroll h-[38rem] p-2">
                   {column.tasks.map((task) => (
-                    <Task key={task.title} task={task} />
+                    <Task key={task.id} task={task} />
                   ))}
                 </div>
               )}

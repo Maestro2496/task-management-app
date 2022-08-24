@@ -18,6 +18,7 @@ export default function SelectMenu({setFieldValue, taskStatus, currentStatus}) {
   useEffect(() => {
     setFieldValue("status", selected);
   }, [selected, setFieldValue]);
+
   return (
     <Listbox value={selected} onChange={setSelected}>
       {({open}) => (

@@ -25,7 +25,7 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
     }
     return status;
   }, [boards, boardHref]);
-  console.log(taskStatus);
+
   const dispatch = useDispatch();
   const initialValues = useMemo(() => {
     return {
@@ -113,8 +113,9 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
                                 id={subtask.id}
                                 subtasks={values.subtasks}
                                 setFieldValue={setFieldValue}
-                                className="h-9 border border-red-500 p-2"
-                                placeholder="e.g Eddy the great guy"
+                                className="h-9 border border-gray-500 p-2"
+                                placeholder={subtask.title}
+                                value={subtask.title}
                               />
                               <XIcon
                                 className="w-5 h-5"

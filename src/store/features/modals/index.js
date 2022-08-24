@@ -49,6 +49,12 @@ const modalSlice = createSlice({
     hideAddColumn: (state) => {
       state.column.add = false;
     },
+    showAddTask: (state) => {
+      state.task.add = true;
+    },
+    hideAddTask: (state) => {
+      state.task.add = false;
+    },
   },
 });
 export const {
