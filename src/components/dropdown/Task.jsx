@@ -2,8 +2,7 @@
 import {Fragment} from "react";
 import {Menu, Transition} from "@headlessui/react";
 import {DotsVerticalIcon} from "@heroicons/react/solid";
-import {useDispatch, useSelector} from "react-redux";
-import {showDeleteTask, showEditTask} from "../../store/features/modals";
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }

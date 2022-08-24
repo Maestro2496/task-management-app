@@ -30,7 +30,7 @@ export default function AddTask() {
   const boards = useSelector((state) => state.boards);
   const location = useLocation();
   const boardHref = location.pathname.split("/")[2];
-  const currentStatus = useMemo(() => {
+  const taskStatus = useMemo(() => {
     let status = [];
 
     const board = boards.find((board) => board.href === boardHref);
@@ -112,7 +112,6 @@ export default function AddTask() {
                                       subtasks={props.values.subtasks}
                                       setFieldValue={props.setFieldValue}
                                       id={subtask.id}
-                                      name={subtask.name}
                                       className="h-9 border border-red-500 p-2"
                                       placeholder="Cook"
                                     />
@@ -153,10 +152,7 @@ export default function AddTask() {
                         </div>
                         <div className="mt-4 w-full flex flex-col space-y-2">
                           <h3 className="text-[#828FA3] text-sm font-semibold">Current Status</h3>
-                          <SelectMenu
-                            currentStatus={currentStatus}
-                            setFieldValue={props.setFieldValue}
-                          />
+                          <SelectMenu taskStatus={taskStatus} setFieldValue={props.setFieldValue} />
                         </div>
                         <button
                           type="submit"

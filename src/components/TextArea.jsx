@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import {useField} from "formik/";
 export default function CustomTextArea({label, ...props}) {
-  const [field, meta] = useField(props);
+  const [field] = useField(props);
   return (
     <div>
       <label htmlFor={props.name} className="block text-sm font-medium text-gray-700">

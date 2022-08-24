@@ -6,8 +6,7 @@ import {Dialog, Transition} from "@headlessui/react";
 import SelectMenu from "../SelectMenu";
 
 import TaskDropDown from "../../dropdown/Task";
-import EditTask from "./EditTask";
-import DeleteTask from "./DeleteTask";
+
 
 export default function TaskDescription({
   open,

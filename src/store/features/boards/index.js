@@ -27,11 +27,11 @@ const boardReducer = createSlice({
       return newBoards;
     },
     addColumn: (boards, action) => {
-      const {boardId, name} = action.payload;
+      const {boardHref, columnName} = action.payload;
       //Find the board
-      const board = boards.find((board) => board.id === boardId);
+      const board = boards.find((board) => board.href === boardHref);
       //Add a new column
-      board.columns.push({name, tasks: []});
+      board.columns.push({id: v4(), name: columnName, tasks: []});
     },
     editColumnName: (boards, action) => {
       const {boardId, columnId, name} = action.payload;
@@ -70,28 +70,64 @@ const boardReducer = createSlice({
       column.tasks.push({title: taskTitle, description: taskDesc, status: column.name, subtasks});
     },
     editTask: (boards, action) => {
-      const {boardHref, columnId, taskId, taskTitle, taskDesc, subtasks} = action.payload;
+      const {boardHref, currentColName, taskId, taskTitle, taskDesc, subtasks, prevColName} =
+        action.payload;
+      console.log({prevColName, currentColName});
+      //Find the board
+      const board = boards.find((board) => board.href === boardHref);
+
+      //Find the prevColumn
+      const prevColumn = board.columns.find((column) => column.name === prevColName);
+      //Find the currentColumn
+      const currentColumn = board.columns.find((column) => column.name === currentColName);
+      if (currentColName === prevColName) {
+        //Edit the task
+        prevColumn.tasks = prevColumn.tasks.map((task) => {
+          if (task.id === taskId) {
+            return {
+              ...task,
+              ...(taskTitle && {title: taskTitle}),
+              ...(taskDesc && {description: taskDesc}),
+              ...(subtasks && {subtasks}),
+            };
+          }
+          return task;
+        });
+      } else {
+        //Add the task to the new column and delete from the prev
+        currentColumn.tasks.push({
+          id: taskId,
+          title: taskTitle,
+          description: taskDesc,
+          subtasks,
+          status: currentColName,
+        });
+        prevColumn.tasks = prevColumn.tasks.filter((task) => task.id !== taskId);
+      }
+    },
+    deleteTask: (boards, action) => {
+      console.log("Calleed");
+      const {boardHref, columnName, taskId} = action.payload;
       //Find the board
       const board = boards.find((board) => board.href === boardHref);
       //Find the column
-      const column = board.columns.find((column) => column.id === columnId);
+      const column = board.columns.find((column) => column.name === columnName);
 
-      //Add a new Task
-      column.tasks = column.tasks.map((task) => {
-        if (task.id === taskId) {
-          return {
-            ...task,
-            ...(taskTitle && {title: taskTitle}),
-            ...(taskDesc && {description: taskDesc}),
-            ...(subtasks && {subtasks}),
-          };
-        }
-        return task;
-      });
+      //Delete the task by it's Id
+      column.tasks = column.tasks.filter((task) => task.id !== taskId);
     },
   },
 });
 
-export const {addNewBoard, editBoardName, addColumn, editColumnName, deleteColumn, deleteBoard,addTask} =
-  boardReducer.actions;
+export const {
+  addNewBoard,
+  editBoardName,
+  addColumn,
+  editColumnName,
+  deleteColumn,
+  deleteBoard,
+  addTask,
+  editTask,
+  deleteTask,
+} = boardReducer.actions;
 export default boardReducer.reducer;

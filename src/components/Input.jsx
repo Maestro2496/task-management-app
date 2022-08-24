@@ -20,7 +20,7 @@ export function CustomInput1({label, ...props}) {
   );
 }
 export function CustomInput2({label, ...props}) {
-  const [field, meta] = useField(props);
+  const [field] = useField(props);
   return (
     <div>
       <label htmlFor={props.name} className="block text-sm font-medium text-gray-700">

@@ -11,6 +11,9 @@ const initialState = {
     edit: false,
     delete: false,
   },
+  column: {
+    add: false,
+  },
 };
 const modalSlice = createSlice({
   initialState,
@@ -39,27 +42,12 @@ const modalSlice = createSlice({
     hideDeleteBoard: (state) => {
       state.board.delete = false;
     },
-    //Task
-    //AddTaskModal
-    showAddTask: (state) => {
-      state.task.add = true;
+    //Column
+    showAddColumn: (state) => {
+      state.column.add = true;
     },
-    hideAddTask: (state) => {
-      state.task.add = false;
-    },
-    //EditTaskModal
-    showEditTask: (state) => {
-      state.task.edit = true;
-    },
-    hideEditTask: (state) => {
-      state.task.edit = false;
-    },
-    //DeleteTaskModal
-    showDeleteTask: (state) => {
-      state.task.delete = true;
-    },
-    hideDeleteTask: (state) => {
-      state.task.delete = false;
+    hideAddColumn: (state) => {
+      state.column.add = false;
     },
   },
 });
@@ -67,14 +55,15 @@ export const {
   showAddBoard,
   showAddTask,
   showDeleteBoard,
-  showDeleteTask,
+
   showEditBoard,
-  showEditTask,
+
   hideAddBoard,
   hideAddTask,
   hideDeleteBoard,
-  hideDeleteTask,
+
   hideEditBoard,
-  hideEditTask,
+  showAddColumn,
+  hideAddColumn,
 } = modalSlice.actions;
 export default modalSlice.reducer;

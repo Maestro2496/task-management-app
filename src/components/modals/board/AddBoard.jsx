@@ -2,10 +2,10 @@ import {Formik, Form} from "formik";
 import {Fragment} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {XIcon} from "@heroicons/react/outline";
-import {object} from "yup";
+
 import {v4} from "uuid";
 import {CustomInput2} from "../../Input";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import SubTask from "../../SubTask";
 import {addNewBoard} from "../../../store/features/boards/";
 
@@ -18,9 +18,7 @@ const initialValues = {
   ],
 };
 
-const validationSchema = object({
-  boardName: "",
-});
+
 export default function AddBoard({open, setOpen}) {
   const dispatch = useDispatch();
 

@@ -13,7 +13,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function SelectMenu({currentStatus = 0}) {
+export default function SelectMenu({currentStatus =0}) {
   const indexOfCurrentStatus = useMemo(() => {
     const index = taskStatus.findIndex((status) => status.name === currentStatus);
     if (index === -1) return 0;

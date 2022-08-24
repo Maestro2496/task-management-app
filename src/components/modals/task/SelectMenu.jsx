@@ -3,22 +3,20 @@ import {Fragment, useEffect, useMemo, useState} from "react";
 import {Listbox, Transition} from "@headlessui/react";
 import {CheckIcon, ChevronDownIcon} from "@heroicons/react/solid";
 
-const taskStatus = [{name: "Todo"}, {name: "Doing"}, {name: "Done"}];
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function SelectMenu({currentStatus = 0, setFieldValue}) {
+export default function SelectMenu({setFieldValue, taskStatus, currentStatus}) {
   const indexOfCurrentStatus = useMemo(() => {
-    const index = taskStatus.findIndex((status) => status.name === currentStatus);
+    const index = taskStatus.findIndex((status) => status === currentStatus);
     if (index === -1) return 0;
     return index;
-  }, [currentStatus]);
-
+  }, [currentStatus, taskStatus]);
   const [selected, setSelected] = useState(taskStatus[indexOfCurrentStatus]);
+
   useEffect(() => {
-    setFieldValue("status", selected.name);
+    setFieldValue("status", selected);
   }, [selected, setFieldValue]);
   return (
     <Listbox value={selected} onChange={setSelected}>
@@ -26,7 +24,7 @@ export default function SelectMenu({currentStatus = 0, setFieldValue}) {
         <>
           <div className="mt-1 relative z-[60]">
             <Listbox.Button className="bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-              <span className="block truncate">{selected.name}</span>
+              <span className="block truncate">{selected}</span>
               <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
               </span>
@@ -42,7 +40,7 @@ export default function SelectMenu({currentStatus = 0, setFieldValue}) {
               <Listbox.Options className="absolute z-[70] mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                 {taskStatus.map((status) => (
                   <Listbox.Option
-                    key={status.name}
+                    key={status}
                     className={({active}) =>
                       classNames(
                         active ? "text-white bg-indigo-600" : "text-gray-900",
@@ -59,7 +57,7 @@ export default function SelectMenu({currentStatus = 0, setFieldValue}) {
                             "block truncate"
                           )}
                         >
-                          {status.name}
+                          {status}
                         </span>
 
                         {selected ? (

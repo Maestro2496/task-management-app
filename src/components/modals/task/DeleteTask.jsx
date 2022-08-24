@@ -1,11 +1,15 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment, useEffect, useRef, useState} from "react";
+import {Fragment, useRef} from "react";
 import {Dialog, Transition} from "@headlessui/react";
-import {useSelector, useDispatch} from "react-redux/";
-import {hideDeleteTask} from "../../../store/features/modals";
+import {useLocation} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {deleteTask} from "../../../store/features/boards";
 
-export default function DeleteTask({open, setOpen, setOpenTaskDesc}) {
+export default function DeleteTask({open, setOpen, setOpenTaskDesc, task}) {
   const cancelButtonRef = useRef(null);
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const boardHref = location.pathname.split("/")[2];
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -46,9 +50,9 @@ export default function DeleteTask({open, setOpen, setOpenTaskDesc}) {
                   <div className="mt-3 text-center sm:mt-5">
                     <Dialog.Title
                       as="h3"
-                      className="text-red-600 text-left text-lg leading-6 font-medium "
+                      className="text-green-600 text-center text-lg leading-6 font-medium "
                     >
-                      Delete this task ?
+                      Delete Task ?
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500 text-left">
@@ -79,6 +83,13 @@ export default function DeleteTask({open, setOpen, setOpenTaskDesc}) {
                     type="button"
                     className="text-white mt-3 w-full inline-flex justify-center rounded-full border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
                     onClick={() => {
+                      dispatch(
+                        deleteTask({
+                          boardHref,
+                          columnName: task.status,
+                          taskId: task.id,
+                        })
+                      );
                       setOpen(false);
                       setOpenTaskDesc(true);
                     }}
