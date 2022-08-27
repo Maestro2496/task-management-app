@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment, useMemo} from "react";
+import {Fragment, useMemo, useState} from "react";
 import clsx from "clsx";
 import {Dialog, Transition} from "@headlessui/react";
 import {Formik, Form} from "formik";
@@ -14,6 +14,7 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
   const dispatch = useDispatch();
   const boardHref = location.pathname.split("/")[2];
   const boards = useSelector((state) => state.boards);
+  const [hasChanged, setHasChanged] = useState(false);
   const taskStatus = useMemo(() => {
     let status = [];
     const board = boards.find((board) => board.href === boardHref);
@@ -35,7 +36,7 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
         <Dialog as="div" className="relative z-[120]" onClose={setOpen}>
           <Transition.Child
             as={Fragment}
-            enter="ease-out duration-300"
+            enter="ease-out duration-500"
             enterFrom="opacity-0"
             enterTo="opacity-100"
             leave="ease-in duration-200"
@@ -46,17 +47,17 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
           </Transition.Child>
 
           <div className="fixed z-10 inset-0 ">
-            <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+            <div className="flex items-center sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
               <Transition.Child
                 as={Fragment}
-                enter="ease-out duration-300"
+                enter="ease-out duration-500"
                 enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 enterTo="opacity-100 translate-y-0 sm:scale-100"
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="flex flex-col space-y-4 relative bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:max-w-md sm:w-full sm:p-6">
+                <Dialog.Panel className="dark:bg-dark-grey flex flex-col space-y-4 relative bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:max-w-md sm:w-full sm:p-6">
                   <Formik
                     initialValues={initialValues}
                     onSubmit={(values) => {
@@ -71,6 +72,7 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
                           prevColName: task.status,
                         })
                       );
+                      setOpen(false);
                     }}
                   >
                     {({values, setFieldValue}) => {
@@ -80,21 +82,23 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
                       return (
                         <Form>
                           <div className="pr-2 flex justify-between items-center ">
-                            <h2 className="font-bold w-2/3 ">{task.title}</h2>
+                            <h2 className="font-bold w-2/3 dark:text-white">{task.title}</h2>
                             <TaskDropDown
                               setOpenDeleteTask={setOpenDeleteTask}
                               setOpenEditTask={setOpenEditTask}
                               setOpenTaskDesc={setOpen}
                             />
                           </div>
-                          <p className="text-sm text-[#828FA3]">{task.description}</p>
+                          <p className="text-sm text-[#828FA3] dark:text-medium-grey my-6">
+                            {task.description}
+                          </p>
                           <div className="flex flex-col space-y-4">
-                            <h3 className="text-[#828FA3] text-sm font-semibold">{`Subtasks (${taskCompleted} of ${values.subtasks.length} )`}</h3>
+                            <h3 className="text-[#828FA3] text-sm font-semibold dark:text-white">{`Subtasks (${taskCompleted} of ${values.subtasks.length} )`}</h3>
                             <div className="space-y-2 flex flex-col items-center justify-center">
                               {values.subtasks.map((subtask) => (
                                 <div
                                   key={subtask.title}
-                                  className="w-full p-2 bg-[#F4F7FD] flex items-center justify-start space-x-2 rounded-md hover:bg-[#635FC7]/25 cursor-pointer"
+                                  className="w-full p-2 bg-[#F4F7FD] dark:bg-very-dark-grey flex items-center justify-start space-x-5 rounded-md hover:bg-[#635FC7]/25 cursor-pointer"
                                 >
                                   <div className="flex items-center justify-center">
                                     <input
@@ -102,6 +106,7 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
                                       name={subtask.title}
                                       defaultChecked={subtask.isCompleted}
                                       onChange={(event) => {
+                                        setHasChanged(true);
                                         if (event.target.checked) {
                                           setFieldValue(
                                             "subtasks",
@@ -131,15 +136,15 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
                                         }
                                       }}
                                       type="checkbox"
-                                      className="appearance-none  flex items-center justify-center focus:ring-indigo-500 h-5 w-5 text-[#635FC7] border border-gray-700 bg-white rounded checked:bg-primary"
+                                      className="appearance-none  flex items-center justify-center focus:ring-indigo-500 h-5 w-5 text-[#635FC7] border border-gray-700 bg-white dark:bg-medium-grey rounded checked:bg-primary"
                                     />
                                   </div>
 
                                   <p
                                     className={clsx(
                                       subtask.isCompleted
-                                        ? "line-through decoration-gray-600 decoration-1 text-gray-500"
-                                        : ""
+                                        ? "line-through decoration-medium-grey decoration-1 text-gray-500 dark:text-medium-grey"
+                                        : "dark:text-white font-bold"
                                     )}
                                   >
                                     {subtask.title}
@@ -148,18 +153,21 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
                               ))}
                             </div>
                           </div>
-                          <div className="w-full flex flex-col space-y-4">
-                            <h3 className="text-[#828FA3] text-sm font-semibold">Current Status</h3>
+                          <div className="w-full flex flex-col space-y-2 mt-5">
+                            <h3 className="text-[#828FA3] text-sm font-semibold dark:text-white">
+                              Current Status
+                            </h3>
                             <SelectMenu
                               currentStatus={task.status}
                               taskStatus={taskStatus}
                               setFieldValue={setFieldValue}
+                              setHasChanged={setHasChanged}
                             />
                           </div>
+
                           <button
-                            style={{backgroundColor: "#625FC7"}}
                             type="submit"
-                            className="mt-2 rounded-md text-white w-full  text-center bg-primary px-2 py-1"
+                            className="mt-6 rounded-md bg-primary text-white w-full dark:bg-primary text-center px-2 py-2"
                           >
                             Confirm changes
                           </button>

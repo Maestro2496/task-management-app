@@ -16,7 +16,7 @@ export default function AddColumn() {
       <Dialog as="div" className="relative z-[130]" onClose={() => dispatch(hideAddColumn())}>
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
+          enter="ease-out duration-500"
           enterFrom="opacity-0"
           enterTo="opacity-100"
           leave="ease-in duration-200"
@@ -30,14 +30,14 @@ export default function AddColumn() {
           <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-300"
+              enter="ease-out duration-500"
               enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-sm sm:w-full sm:p-6">
+              <Dialog.Panel className="relative dark:bg-dark-grey bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-sm sm:w-full sm:p-6">
                 <form
                   className="flex flex-col space-y-3 justify-center items-center"
                   onSubmit={(event) => {
@@ -46,19 +46,19 @@ export default function AddColumn() {
                     dispatch(hideAddColumn());
                   }}
                 >
-                  <label className="w-full text-left">Name</label>
+                  <label className="w-full text-left dark:text-white">Column Name</label>
                   <input
                     type="text"
                     value={name}
                     onChange={(event) => setName(event.target.value)}
-                    className="border border-gray-600/30 focus:ring-gray-500 rounded-md px-4 h-8 w-full"
+                    className="border  focus:ring-primary focus:ring-1 dark:text-white focus:border-none rounded-md px-4 h-8 w-full dark:bg-inherit dark:border-lines-dark"
                   />
                   <button
                     type="submit"
-                    className="px-2 py-1 bg-teal-900 text-center rounded-md w-1/2 text-white"
+                    className="px-6 py-2 bg-teal-900 text-center rounded-md w-fit text-white"
                     style={{backgroundColor: "#635FC7"}}
                   >
-                    Add new column
+                    Add
                   </button>
                 </form>
               </Dialog.Panel>

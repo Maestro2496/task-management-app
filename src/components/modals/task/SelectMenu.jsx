@@ -24,10 +24,13 @@ export default function SelectMenu({setFieldValue, taskStatus, currentStatus}) {
       {({open}) => (
         <>
           <div className="mt-1 relative z-[60]">
-            <Listbox.Button className="bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-              <span className="block truncate">{selected}</span>
+            <Listbox.Button className="bg-inherit relative w-full border border-gray-300 dark:border-lines-dark rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <span className="block truncate dark:text-white">{selected}</span>
               <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                <ChevronDownIcon
+                  className="h-5 w-5 fill-primary stroke-primary"
+                  aria-hidden="true"
+                />
               </span>
             </Listbox.Button>
 
@@ -38,13 +41,13 @@ export default function SelectMenu({setFieldValue, taskStatus, currentStatus}) {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-[70] mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-[70] mt-1 w-full dark:bg-very-dark-grey bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                 {taskStatus.map((status) => (
                   <Listbox.Option
                     key={status}
                     className={({active}) =>
                       classNames(
-                        active ? "text-white bg-indigo-600" : "text-gray-900",
+                        active ? "text-white bg-primary" : "text-gray-900 dark:text-medium-grey",
                         "cursor-default select-none relative py-2 pl-3 pr-9"
                       )
                     }
@@ -68,7 +71,7 @@ export default function SelectMenu({setFieldValue, taskStatus, currentStatus}) {
                               "absolute inset-y-0 right-0 flex items-center pr-4"
                             )}
                           >
-                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                            <CheckIcon className="h-5 w-5 " aria-hidden="true" />
                           </span>
                         ) : null}
                       </>

@@ -9,18 +9,21 @@ const boardReducer = createSlice({
   name: "boards",
   reducers: {
     addNewBoard: (boards, action) => {
-      console.log("Eddy");
       const id = v4();
       const {boardName, columns} = action.payload;
       const href = boardName.replace(" ", "");
       boards.push({id, name: boardName, href, columns});
     },
-    editBoardName: (boards, action) => {
-      const {boardId, name} = action.payload;
+    editBoard: (boards, action) => {
+      const {boardHref, boardName, columns} = action.payload;
       const newBoards = boards.map((board) => {
-        if (board.id === boardId) {
-          board.name = name;
-          board.href = name.replace(" ", "");
+        if (board.href === boardHref) {
+          return {
+            ...board,
+            name: boardName,
+            columns: columns,
+            //href: boardName.replace(" ", ""),
+          };
         }
         return board;
       });
@@ -72,7 +75,7 @@ const boardReducer = createSlice({
     editTask: (boards, action) => {
       const {boardHref, currentColName, taskId, taskTitle, taskDesc, subtasks, prevColName} =
         action.payload;
-      console.log({prevColName, currentColName});
+      
       //Find the board
       const board = boards.find((board) => board.href === boardHref);
 
@@ -94,7 +97,7 @@ const boardReducer = createSlice({
           return task;
         });
       } else {
-        
+        console.log('Here')
         //Add the task to the new column and delete from the prev
         currentColumn.tasks.push({
           id: taskId,
@@ -121,7 +124,7 @@ const boardReducer = createSlice({
 
 export const {
   addNewBoard,
-  editBoardName,
+  editBoard,
   addColumn,
   editColumnName,
   deleteColumn,

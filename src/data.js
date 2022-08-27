@@ -402,7 +402,7 @@ export const boards = [
             id: 2,
             title: "Share on Show HN",
             description: "",
-            status: "",
+            status: "Todo",
             subtasks: [
               {
                 id: 1,
@@ -425,7 +425,7 @@ export const boards = [
             id: 3,
             title: "Write launch article to publish on multiple channels",
             description: "",
-            status: "",
+            status: "Todo",
             subtasks: [
               {
                 id: 1,

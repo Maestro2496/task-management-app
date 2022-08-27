@@ -12,15 +12,22 @@ import Toggle from "./Toggle";
 import HideSidebar from "../../../assets/HideSidebar";
 import LogoDark from "../../../assets/LogoDark";
 import {hide} from "../../../store/features/sidebar";
+import LogoLight from "../../../assets/LogoLight";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 const Logo = () => {
   return (
-    <div className="flex-shrink-0 px-4 flex items-center py-8">
-      <LogoDark />
-    </div>
+    <>
+      {" "}
+      <div className="dark:hidden flex-shrink-0 px-4 flex items-center py-8">
+        <LogoDark />
+      </div>
+      <div className="hidden dark:flex flex-shrink-0 px-4 items-center py-8">
+        <LogoLight />
+      </div>
+    </>
   );
 };
 const HideSidebarButton = () => {
@@ -33,7 +40,9 @@ const HideSidebarButton = () => {
       className="space-x-4 flex items-center justify-start "
     >
       <HideSidebar />
-      <span className="text-gray-500 font-semibold text-[15px]">Hide sidebar</span>
+      <span className="text-gray-500 dark:text-[#828FA3] font-semibold text-[15px]">
+        Hide sidebar
+      </span>
     </button>
   );
 };
@@ -49,17 +58,17 @@ export default function Sidebar() {
       <AddBoard open={openModal} setOpen={setOpenModal} />
       <div
         className={clsx(
-          " z-[100] transition-all duration-700 fixed inset-y-0 h-full flex flex-col w-[22%] ",
+          "hidden md:flex z-[100] transition-all duration-500 fixed inset-y-0 h-full  flex-col lg:w-[22%] w-[32%]",
           sidebar === "show"
             ? "z-40 translate-x-0 opacity-100"
             : "-translate-x-[100%] -z-10 opacity-0"
         )}
       >
-        <div className="pb-12 border-r border-gray-200 pt-0 flex flex-col flex-grow bg-white overflow-y-auto">
+        <div className="pb-12 border-r dark:border-r-[#272832] pt-0 flex flex-col flex-grow dark:bg-[#2B2C37] bg-white overflow-y-auto">
           <Logo />
           <div className="flex-grow mt-5 flex flex-col ">
             <nav className="flex-1 pr-2 pb-4">
-              <div className="ml-4 py-4 text-[0.9375rem] text-gray-700 tracking-wide font-semibold opacity-50">
+              <div className="ml-4 py-4 text-[0.9375rem] text-medium-grey dark:text-[#828FA3] tracking-wide font-semibold opacity-50">
                 All BOARDS ({boards.length})
               </div>
               <ul className="">
@@ -74,7 +83,7 @@ export default function Sidebar() {
                     className={({isActive}) => {
                       return (
                         " group rounded-r-full py-5 px-4 flex items-center text-sm font-medium space-x-3 text-black hover:text-gray-900 " +
-                        (isActive ? "bg-primary" : "bg-white")
+                        (isActive ? "bg-primary" : "")
                       );
                     }}
                   >
@@ -87,7 +96,7 @@ export default function Sidebar() {
                         "text-[0.9375rem]",
                         board.href === location.pathname.split("/")[2]
                           ? "text-white"
-                          : "text-gray-900"
+                          : "text-gray-900 dark:text-[#828FA3]"
                       )}
                     >
                       {board.name}
@@ -108,7 +117,7 @@ export default function Sidebar() {
             </nav>
           </div>
           <div className=" px-4 flex flex-col space-y-4">
-            <div className="flex space-x-8 bg-indigo-100/90 rounded-md h-12 justify-center items-center">
+            <div className="flex space-x-8 bg-indigo-100/90 dark:bg-[#20212C] rounded-md h-12 justify-center items-center">
               <LightTheme />
               <Toggle />
               <DarkTheme />

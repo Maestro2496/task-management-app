@@ -11,7 +11,7 @@ export default function TaskDropDown({setOpenEditTask, setOpenDeleteTask, setOpe
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="bg-gray-100 rounded-full flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+        <Menu.Button className=" rounded-full flex items-center text-gray-400 hover:text-gray-600 ">
           <span className="sr-only">Open options</span>
           <DotsVerticalIcon className="h-5 w-5" aria-hidden="true" />
         </Menu.Button>
@@ -26,7 +26,7 @@ export default function TaskDropDown({setOpenEditTask, setOpenDeleteTask, setOpe
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="origin-top-right absolute -left-24 mt-2 w-56 rounded-md shadow-lg dark:bg-very-dark-grey bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             <Menu.Item>
               {({active}) => (
@@ -36,8 +36,10 @@ export default function TaskDropDown({setOpenEditTask, setOpenDeleteTask, setOpe
                     setOpenTaskDesc(false);
                   }}
                   className={classNames(
-                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                    "block px-4 py-2 text-sm"
+                    active
+                      ? " text-gray-900 dark:text-gray-400"
+                      : "text-medium-grey dark:text-medium-grey",
+                    "w-full text-left block px-4 py-2 text-sm"
                   )}
                 >
                   Edit Task
@@ -52,8 +54,8 @@ export default function TaskDropDown({setOpenEditTask, setOpenDeleteTask, setOpe
                     setOpenTaskDesc(false);
                   }}
                   className={classNames(
-                    active ? "bg-gray-100 text-red-900" : "text-red-700",
-                    "block px-4 py-2 text-sm"
+                    active ? " text-[#EA5555]" : "text-[#EA5555]",
+                    "w-full text-left block px-4 py-2 text-sm"
                   )}
                 >
                   Delete task

@@ -48,7 +48,7 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
       >
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
+          enter="ease-out duration-500"
           enterFrom="opacity-0"
           enterTo="opacity-100"
           leave="ease-in duration-200"
@@ -59,17 +59,17 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
         </Transition.Child>
 
         <div className="fixed z-10 inset-0 ">
-          <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+          <div className="flex items-center sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-300"
+              enter="ease-out duration-500"
               enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="flex flex-col space-y-4  relative bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:max-w-md sm:w-full sm:p-6">
+              <Dialog.Panel className="flex flex-col space-y-4  relative dark:bg-dark-grey bg-white rounded-lg px-4 pt-2 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:max-w-md sm:w-full sm:p-6">
                 <Formik
                   initialValues={initialValues}
                   onSubmit={(values) => {
@@ -85,19 +85,20 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
                         currentColName: values.status,
                       })
                     );
+                    setOpen(false);
                   }}
                 >
-                  {({values, setFieldValue}) => (
+                  {({values, setFieldValue, setFieldError,errors}) => (
                     <Form>
                       <div className="pr-2 flex justify-between items-center ">
-                        <h2 className="font-bold text-lg">Edit task</h2>
+                        <h2 className="font-bold text-lg dark:text-white">Edit task</h2>
                       </div>
                       <div className="space-y-4 mt-4">
                         <CustomInput2
                           type="text"
                           name="title"
                           label="Title"
-                          className="border border-gray-400 h-9"
+                          className="border border-gray-400 h-9 px-2"
                         />
                         <CustomTextArea
                           label="Description"
@@ -105,25 +106,37 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
                           placeholder="e.g It's always good to take a break. This 15 min break will reacharge your batteries a little"
                           className="h-24 py-3 px-2 border border-gray-400"
                         />
-                        <div className="space-y-4">
-                          <h2>Subtasks</h2>
+                        <div className="space-y-2">
+                          <h2 className="dark:text-white text-medium-grey font-semibold">
+                            Subtasks{" "}
+                            {errors.subtasks && (
+                              <span className="ml-2 text-sm text-red-500">
+                                {errors.subtasks}
+                              </span>
+                            )}
+                          </h2>
                           {values.subtasks.map((subtask) => (
                             <div key={subtask.id} className="flex space-x-3 items-center pr-2">
                               <SubTask
                                 id={subtask.id}
+                                title={subtask.title}
                                 subtasks={values.subtasks}
                                 setFieldValue={setFieldValue}
-                                className="h-9 border border-gray-500 p-2"
+                                className="h-9 border border-gray-500 p-2 dark:border-lines-dark dark:bg-inherit dark:text-white"
                                 placeholder={subtask.title}
                                 value={subtask.title}
                               />
                               <XIcon
-                                className="w-5 h-5"
+                                className="w-5 h-5 stroke-medium-grey"
                                 onClick={() => {
-                                  setFieldValue(
-                                    "subtasks",
-                                    values.subtasks.filter((subt) => subt.id !== subtask.id)
-                                  );
+                                  if (values.subtasks.length === 1) {
+                                    setFieldError("subtasks", "You need at least one subtask");
+                                  } else {
+                                    setFieldValue(
+                                      "subtasks",
+                                      values.subtasks.filter((subt) => subt.id !== subtask.id)
+                                    );
+                                  }
                                 }}
                               />
                             </div>
@@ -131,12 +144,20 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
 
                           <button
                             type="button"
-                            className="w-full font-semibold bg-[#635FC740] py-2 rounded-full text-indigo-900"
+                            className="w-full font-semibold bg-[#635FC740] dark:bg-white py-2 rounded-full text-[#635FC7]"
                             onClick={() => {
-                              setFieldValue(
-                                "subtasks",
-                                values.subtasks.concat({id: v4(), title: "", isCompleted: false})
-                              );
+                              if (values.subtasks.length === 3) {
+                                setFieldError("subtasks", "Can't add more than 3 subtasks");
+                              } else {
+                                setFieldValue(
+                                  "subtasks",
+                                  values.subtasks.concat({
+                                    id: v4(),
+                                    title: "",
+                                    isCompleted: false,
+                                  })
+                                );
+                              }
                             }}
                           >
                             + Add new Subtask
@@ -144,8 +165,10 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
                         </div>
                       </div>
 
-                      <div className="w-full flex flex-col space-y-4 mt-2">
-                        <h3 className="text-[#828FA3] text-sm font-semibold">Current Status</h3>
+                      <div className="w-full flex flex-col space-y-4 mt-4">
+                        <h3 className="text-medium-grey font-semibold text-sm dark:text-white">
+                          Status
+                        </h3>
                         <SelectMenu
                           taskStatus={taskStatus}
                           setFieldValue={setFieldValue}
@@ -154,8 +177,7 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
                       </div>
                       <button
                         type="submit"
-                        style={{backgroundColor: "#A8A4FF"}}
-                        className="mt-4 w-full font-semibold bg-[#A8A4FF] py-2 rounded-full text-white"
+                        className="mt-3 w-full font-semibold bg-[#635FC7] py-2 rounded-full text-white"
                       >
                         Save changes
                       </button>

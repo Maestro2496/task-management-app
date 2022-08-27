@@ -10,7 +10,7 @@ import clsx from "clsx";
 export default function Dashboard() {
   const sidebar = useSelector((state) => state.sidebar);
   return (
-    <div className="overflow-y-hidden h-screen parent">
+    <div className="overflow-y-hidden h-screen ">
       <SidebarShowBtn />
       <div>
         <Sidebar />
@@ -18,7 +18,7 @@ export default function Dashboard() {
         <Header />
         <main
           className={clsx(
-            "relative top-[6.1rem] z-30 w-full transition-all duration-700 h-[40.8rem] bg-[#E4EBFA] ",
+            "relative top-[3.5rem] md:top-[6.1rem] z-30 w-full transition-all duration-500 h-[40.8rem] dark:bg-[#20212C] bg-[#E4EBFA] ",
             sidebar === "show" ? "main" : "main-no-margin"
           )}
         >

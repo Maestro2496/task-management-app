@@ -1,12 +1,33 @@
+import {ChevronDownIcon, PlusCircleIcon, PlusIcon} from "@heroicons/react/solid";
 import clsx from "clsx";
 import React from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {useLocation} from "react-router-dom";
 import LogoDark from "../../../assets/LogoDark";
+import LogoLight from "../../../assets/LogoLight";
+import LogoMobile from "../../../assets/LogoMobile";
 import {showAddTask} from "../../../store/features/modals";
 import BoardDropDown from "../../dropdown/Board";
+import MobileBoardButton from "../../dropdown/MobileBoardButton";
+import DeleteBoard from "../../modals/board/DeleteBoard";
+
+import EditBoard from "../../modals/board/EditBoard";
+import MobileBoard from "../../modals/board/MobileBoard";
 import AddTask from "../../modals/task/AddTask";
 
+const Logo = () => {
+  return (
+    <>
+      {" "}
+      <div className="dark:hidden flex-shrink-0  flex items-center py-8">
+        <LogoDark />
+      </div>
+      <div className="hidden dark:flex flex-shrink-0 items-center py-8">
+        <LogoLight />
+      </div>
+    </>
+  );
+};
 //Update the left margin
 export default function Header() {
   const dispatch = useDispatch();
@@ -16,22 +37,22 @@ export default function Header() {
   return (
     <>
       <AddTask />
-
+      <EditBoard />
+      <DeleteBoard/>
       <div
         className={clsx(
-          "transition-all duration-700 border-b border-3 bg-white z-40 fixed right-0 left-0 h-[6.1rem] px-8  flex items-center justify-between",
-          sidebar === "show" ? "header" : "header-no-margin "
+          "hidden pr-4  transition-all duration-500 border-b border-3 dark:border-b-[#2b2c35] bg-white dark:bg-[#2B2C37] z-40 fixed right-0 left-0 h-[6.1rem]   md:flex items-center justify-between"
         )}
       >
         <div
           className={clsx(
             sidebar === "show"
               ? "hidden"
-              : "font-bold text-2xl space-x-12 flex h-full justify-center items-center"
+              : "font-bold text-2xl space-x-12 flex h-full justify-start items-center px-4 pr-6"
           )}
         >
-          <LogoDark />
-          <span className="border-l-gray-300 border-l h-full flex items-center justify-center pl-6">
+          <Logo />
+          <span className="border-l-gray-300 dark:border-l-gray-700 dark:text-white border-l h-full flex items-center justify-center pl-6">
             {location.pathname.split("/")[2]}
           </span>
         </div>
@@ -39,11 +60,11 @@ export default function Header() {
         <div
           className={clsx(
             sidebar === "show"
-              ? " font-bold text-2xl space-x-12 flex h-full justify-center items-center ml-[22%]"
+              ? " font-bold text-2xl space-x-12 flex h-full justify-start items-center lg:ml-[22%] ml-[32%]"
               : "hidden"
           )}
         >
-          <span className="  h-full flex items-center justify-center">
+          <span className="dark:text-white pl-3  h-full flex items-center justify-center">
             {location.pathname.split("/")[2]}
           </span>
         </div>
@@ -57,6 +78,17 @@ export default function Header() {
           <div>
             <BoardDropDown />
           </div>
+        </div>
+      </div>
+      <div className=" h-14 z-[62] dark:bg-dark-grey dark:text-white  bg-white px-2 py-3 flex md:hidden justify-between items-center fixed right-0 left-0 ">
+        <div className="flex space-x-4 justify-center items-center">
+          <LogoMobile />
+          <MobileBoardButton />
+          <MobileBoard />
+        </div>
+        <div className="flex justify-center items-center space-x-2">
+          <PlusIcon className="w-10 h-6 bg-primary fill-white rounded-full " />
+          <BoardDropDown />
         </div>
       </div>
     </>

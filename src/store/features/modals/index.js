@@ -5,6 +5,7 @@ const initialState = {
     add: false,
     edit: false,
     delete: false,
+    mobile: false,
   },
   task: {
     add: false,
@@ -55,6 +56,12 @@ const modalSlice = createSlice({
     hideAddTask: (state) => {
       state.task.add = false;
     },
+    showMobile: (state) => {
+      state.board.mobile = true;
+    },
+    hideMobile: (state) => {
+      state.board.mobile = false;
+    },
   },
 });
 export const {
@@ -71,5 +78,7 @@ export const {
   hideEditBoard,
   showAddColumn,
   hideAddColumn,
+  showMobile,
+  hideMobile,
 } = modalSlice.actions;
 export default modalSlice.reducer;

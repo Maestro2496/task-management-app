@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Switch} from "@headlessui/react";
 
 function classNames(...classes) {
@@ -7,8 +7,14 @@ function classNames(...classes) {
 }
 
 export default function Toggle() {
-  const [enabled, setEnabled] = useState(true);
- 
+  const [enabled, setEnabled] = useState(false);
+  useEffect(() => {
+    if (enabled) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [enabled]);
   return (
     <Switch
       checked={enabled}
