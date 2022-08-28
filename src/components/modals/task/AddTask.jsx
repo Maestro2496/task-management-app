@@ -20,7 +20,17 @@ const initialValues = {
   subtasks: [
     {
       id: 1,
-      title: "",
+      title: "Todo",
+      isCompleted: false,
+    },
+    {
+      id: 2,
+      title: "Doing",
+      isCompleted: false,
+    },
+    {
+      id: 3,
+      title: "Done",
       isCompleted: false,
     },
   ],
@@ -111,16 +121,17 @@ export default function AddTask() {
                                   </span>
                                 )}
                               </h2>
-                              <div className="max-h-20 pt-4 md:max-h-24  overflow-y-auto flex flex-col  space-y-3 justify-center items-center pr-2">
+                              <div className="h-32  py-4 px-1  overflow-y-auto flex flex-col  space-y-3 justify-center items-center pr-2">
                                 {props.values.subtasks.map((subtask) => (
                                   <Fragment key={subtask.id}>
-                                    <div className="w-full flex space-x-3 items-center">
+                                    <div className="w-full mt-1 flex space-x-3 items-center">
                                       <SubTask
                                         subtasks={props.values.subtasks}
                                         setFieldValue={props.setFieldValue}
                                         id={subtask.id}
                                         className="h-9 border border-[#828FA340] dark:border-lines-dark dark:bg-[#2B2C37] p-2 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-600"
-                                        placeholder="Cook"
+                                        placeholder={subtask.title}
+                                        value={subtask.title}
                                       />
                                       <XIcon
                                         onClick={() => {

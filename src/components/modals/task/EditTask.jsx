@@ -108,10 +108,10 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
                           <h2 className="dark:text-white text-medium-grey font-semibold">
                             Subtasks{" "}
                           </h2>
-                          <div className="max-h-36  overflow-y-auto flex flex-col  space-y-3 justify-center items-center pr-2">
+                          <div className="h-32  py-4 overflow-y-auto flex flex-col  space-y-3 justify-center items-center pr-2">
                             {values.subtasks.map((subtask) => (
                               <Fragment key={subtask.id}>
-                                <div className="w-full flex space-x-3 items-center">
+                                <div className="w-full max-h-full mt-1 flex space-x-3 items-center">
                                   <SubTask
                                     subtasks={values.subtasks}
                                     setFieldValue={setFieldValue}

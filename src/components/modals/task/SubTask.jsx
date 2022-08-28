@@ -16,6 +16,7 @@ export default function SubTask({
       id={name}
       value={title}
       className={clsx("shadow-sm  block w-full sm:text-sm  rounded-md", className)}
+      placeholder={placeholder}
       onChange={(event) => {
         setFieldValue(
           "subtasks",
