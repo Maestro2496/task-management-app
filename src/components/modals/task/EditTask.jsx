@@ -107,53 +107,50 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
                         <div className="space-y-2">
                           <h2 className="dark:text-white text-medium-grey font-semibold">
                             Subtasks{" "}
-                            {errors.subtasks && (
-                              <span className="ml-2 text-sm text-red-500">{errors.subtasks}</span>
-                            )}
                           </h2>
-                          {values.subtasks.map((subtask) => (
-                            <div key={subtask.id} className="flex space-x-3 items-center pr-2">
-                              <SubTask
-                                id={subtask.id}
-                                title={subtask.title}
-                                subtasks={values.subtasks}
-                                setFieldValue={setFieldValue}
-                                className="h-9 border border-gray-500 p-2 dark:border-lines-dark dark:bg-inherit dark:text-white"
-                                placeholder={subtask.title}
-                                value={subtask.title}
-                              />
-                              <XIcon
-                                className="w-5 h-5 stroke-medium-grey"
-                                onClick={() => {
-                                  if (values.subtasks.length === 1) {
-                                    setFieldError("subtasks", "You need at least one subtask");
-                                  } else {
-                                    setFieldValue(
-                                      "subtasks",
-                                      values.subtasks.filter((subt) => subt.id !== subtask.id)
-                                    );
-                                  }
-                                }}
-                              />
-                            </div>
-                          ))}
+                          <div className="max-h-36  overflow-y-auto flex flex-col  space-y-3 justify-center items-center pr-2">
+                            {values.subtasks.map((subtask) => (
+                              <Fragment key={subtask.id}>
+                                <div className="w-full flex space-x-3 items-center">
+                                  <SubTask
+                                    subtasks={values.subtasks}
+                                    setFieldValue={setFieldValue}
+                                    id={subtask.id}
+                                    title={subtask.title}
+                                    className="h-9 border border-[#828FA340] dark:border-lines-dark dark:bg-[#2B2C37] p-2 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-600"
+                                    placeholder={subtask.title}
+                                    value={subtask.title}
+                                  />
+                                  <XIcon
+                                    onClick={() => {
+                                      if (values.subtasks.length === 1) {
+                                        setFieldError("subtasks", "You need at least one subtask");
+                                      } else {
+                                        setFieldValue(
+                                          "subtasks",
+                                          values.subtasks.filter((subt) => subt.id !== subtask.id)
+                                        );
+                                      }
+                                    }}
+                                    className="w-5 h-5 stroke-medium-grey"
+                                  />
+                                </div>
+                              </Fragment>
+                            ))}
+                          </div>
 
                           <button
                             type="button"
                             className="w-full font-semibold bg-[#635FC740] dark:bg-white py-2 rounded-full text-[#635FC7]"
                             onClick={() => {
-                              if (values.subtasks.length === 3) {
-                                setFieldError("subtasks", "Can't add more than 3 subtasks");
-                              } else {
-                                setFieldValue(
-                                  "subtasks",
-                                  values.subtasks.concat({
-                                    id: v4(),
-                                    title: "",
-                                    isCompleted: false,
-                                  })
-                                );
-                              }
+                              setFieldValue(
+                                "subtasks",
+                                values.subtasks.concat({
+                                  id: v4(),
+                                  title: "",
+                                  isCompleted: false,
+                                })
+                              );
                             }}
                           >
                             + Add new Subtask

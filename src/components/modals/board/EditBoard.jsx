@@ -80,7 +80,7 @@ export default function EditBoard() {
                           <h2 className="block text-sm font-medium text-medium-grey dark:text-white">
                             Board Columns
                           </h2>
-                          <div className="mt-2 space-y-3">
+                          <div className="overflow-y-auto max-h-32 mt-2 space-y-3">
                             {values.columns.map((col) => (
                               <div key={col.id} className="flex space-x-3 items-center pr-2 ">
                                 <ColumnInput

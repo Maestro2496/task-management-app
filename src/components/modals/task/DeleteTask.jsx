@@ -8,7 +8,7 @@ import {BoardContext} from "../../../App";
 
 export default function DeleteTask({open, setOpen, setOpenTaskDesc, task}) {
   const cancelButtonRef = useRef(null);
-  const location = useLocation();
+
   const dispatch = useDispatch();
   const board = useContext(BoardContext);
 
@@ -36,7 +36,7 @@ export default function DeleteTask({open, setOpen, setOpenTaskDesc, task}) {
         </Transition.Child>
 
         <div className="fixed z-10 inset-0 overflow-y-auto">
-          <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+          <div className="flex items-center sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-500"
@@ -57,8 +57,8 @@ export default function DeleteTask({open, setOpen, setOpenTaskDesc, task}) {
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-medium-grey text-left">
-                        Are you sure you want to delete the platform Launch'board? This action can
-                        remove all columns and task and cannot be reversed.
+                        {`Are you sure you want to delete the ${task.title}'task? This action can remove
+                        all columns and task and cannot be reversed.`}
                       </p>
                     </div>
                   </div>

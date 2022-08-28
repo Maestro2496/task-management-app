@@ -39,7 +39,7 @@ export default function AddBoard({open, setOpen}) {
         </Transition.Child>
 
         <div className="fixed z-10 inset-0 ">
-          <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+          <div className="flex items-center sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-500"
@@ -76,11 +76,8 @@ export default function AddBoard({open, setOpen}) {
                         <div className="">
                           <h2 className="dark:text-white text-medium-grey font-semibold">
                             Columns{" "}
-                            {errors.columns && (
-                              <span className="ml-2 text-sm text-red-500">{errors.columns}</span>
-                            )}
                           </h2>
-                          <div className="mt-2 space-y-3">
+                          <div className="max-h-36 overflow-y-auto mt-2 space-y-3">
                             {values.columns.map((column) => (
                               <div key={column.id} className="flex space-x-3 items-center pr-2 ">
                                 <SubTask
@@ -107,15 +104,11 @@ export default function AddBoard({open, setOpen}) {
 
                           <button
                             onClick={() => {
-                              if (values.columns.length === 5) {
-                                setFieldError("columns", "You cannot add more than 5 columns");
-                              } else {
-                                const id = v4();
-                                setFieldValue(
-                                  "columns",
-                                  values.columns.concat({id, name: "", tasks: []})
-                                );
-                              }
+                              const id = v4();
+                              setFieldValue(
+                                "columns",
+                                values.columns.concat({id, name: "", tasks: []})
+                              );
                             }}
                             type="button"
                             className="mt-4 w-full font-semibold bg-[#635FC740] dark:bg-white dark:text-[#635FC7] py-2 rounded-full text-indigo-900"
@@ -126,7 +119,7 @@ export default function AddBoard({open, setOpen}) {
                       </div>
                       <button
                         type="submit"
-                        className="relative z-[135] mt-8 w-full font-semibold bg-[#635FC7] py-2 rounded-full text-white"
+                        className="relative z-[135] mt-4 w-full font-semibold bg-[#635FC7] py-2 rounded-full text-white"
                       >
                         Create new board
                       </button>

@@ -26,7 +26,7 @@ export default function TaskDropDown({setOpenEditTask, setOpenDeleteTask, setOpe
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="origin-top-right absolute -left-24 mt-2 w-56 rounded-md shadow-lg dark:bg-very-dark-grey bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="origin-top-right absolute -left-24 mt-2 w-44 md:w-56 rounded-md shadow-lg dark:bg-very-dark-grey bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             <Menu.Item>
               {({active}) => (

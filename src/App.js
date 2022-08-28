@@ -22,7 +22,7 @@ function App() {
   return (
     <LightContext.Provider value={{light, setLight}}>
       <BoardContext.Provider value={board}>
-        <div className="font-jakarta">
+        <div className="font-jakarta overflow-x-auto bg-[#E4EBFA]">
           <Outlet />
         </div>
       </BoardContext.Provider>

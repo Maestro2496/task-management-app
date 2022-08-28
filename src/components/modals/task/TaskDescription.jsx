@@ -46,7 +46,7 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
           </Transition.Child>
 
           <div className="fixed z-10 inset-0 ">
-            <div className="flex items-center sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+            <div className="w-full flex items-center sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-500"
@@ -56,7 +56,7 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="dark:bg-dark-grey flex flex-col space-y-4 relative bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:max-w-md sm:w-full sm:p-6">
+                <Dialog.Panel className="w-full dark:bg-dark-grey flex flex-col space-y-4 relative bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:max-w-md sm:w-full sm:p-6">
                   <Formik
                     initialValues={initialValues}
                     onSubmit={(values) => {
@@ -91,9 +91,9 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
                           <p className="text-sm text-[#828FA3] dark:text-medium-grey my-6">
                             {task.description}
                           </p>
-                          <div className="flex flex-col space-y-4">
+                          <div className="flex flex-col ">
                             <h3 className="text-[#828FA3] text-sm font-semibold dark:text-white">{`Subtasks (${taskCompleted} of ${values.subtasks.length} )`}</h3>
-                            <div className="space-y-2 flex flex-col items-center justify-center">
+                            <div className="overflow-y-auto py-4 px-1 max-h-32 space-y-2 flex flex-col items-start justify-center">
                               {values.subtasks.map((subtask) => (
                                 <div
                                   key={subtask.title}

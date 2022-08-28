@@ -106,7 +106,7 @@ export default function TaskBoard() {
                 <div
                   onDrop={(event) => onDrop(event, column.name)}
                   onDragOver={(e) => e.preventDefault()}
-                  key={column.name}
+                  key={column.id}
                   className=" w-[16rem] md:w-[22rem] h-[85%] rounded-md md:p-4 flex flex-col justify-center items-center space-y-4 bg-transparent "
                 >
                   <div className="w-full flex space-x-3 justify-start items-center pl-2 ">
@@ -116,7 +116,7 @@ export default function TaskBoard() {
                   {column.tasks.length === 0 ? (
                     <div className=" rounded-md flex flex-col space-y-4 items-center justify-start h-[38rem] p-2 w-full dark:text-white"></div>
                   ) : (
-                    <div className=" rounded-md flex flex-col space-y-3 overflow-y-scroll h-[38rem] p-2 w-full">
+                    <div className=" rounded-md flex flex-col space-y-3 overflow-y-auto h-[38rem] p-2 w-full">
                       {column.tasks.map((task) => (
                         <Task key={task.id} task={task} />
                       ))}

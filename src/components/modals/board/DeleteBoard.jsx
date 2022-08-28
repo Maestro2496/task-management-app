@@ -58,8 +58,8 @@ export default function DeleteBoard() {
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500 text-left dark:text-[#828FA3]">
-                        Are you sure you want to delete the platform Launch'board? This action can
-                        remove all columns and task and cannot be reversed.
+                        Are you sure you want to delete the <span>{board?.name}</span>'board? This
+                        action can remove all columns and task and cannot be reversed.
                       </p>
                     </div>
                   </div>

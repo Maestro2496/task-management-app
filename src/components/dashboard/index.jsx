@@ -33,7 +33,7 @@ export default function Dashboard() {
                 sidebar === "show" ? "lg:ml-[22%] md:ml-[32%] md:pl-8" : " md:pl-12"
               )}
             >
-              <p>Choose a board to get started</p>
+              <p className="dark:text-white">Choose a board to get started</p>
             </div>
           )}
         </main>

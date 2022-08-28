@@ -1,8 +1,7 @@
-import {ChevronDownIcon, PlusCircleIcon, PlusIcon} from "@heroicons/react/solid";
+import {PlusIcon} from "@heroicons/react/solid";
 import clsx from "clsx";
 import React, {useContext} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {useLocation} from "react-router-dom";
 import {BoardContext} from "../../../App";
 import LogoDark from "../../../assets/LogoDark";
 import LogoLight from "../../../assets/LogoLight";
@@ -34,7 +33,6 @@ export default function Header() {
   const dispatch = useDispatch();
   const sidebar = useSelector((state) => state.sidebar);
 
-  const location = useLocation();
   const board = useContext(BoardContext);
 
   return (
@@ -55,9 +53,9 @@ export default function Header() {
           )}
         >
           <Logo />
-          <span className="border-l-gray-300 dark:border-l-gray-700 dark:text-white border-l h-full flex items-center justify-center pl-6">
+          <h1 className="border-l-gray-300 dark:border-l-gray-700 dark:text-white border-l h-full flex items-center justify-center pl-6">
             {board?.name}
-          </span>
+          </h1>
         </div>
 
         <div
@@ -67,9 +65,9 @@ export default function Header() {
               : "hidden"
           )}
         >
-          <span className="dark:text-white pl-3  h-full flex items-center justify-center">
+          <h1 className="dark:text-white pl-3  h-full flex items-center justify-center">
             {board?.name}
-          </span>
+          </h1>
         </div>
         <div className="flex space-x-6 items-center justify-center ">
           <button

@@ -93,14 +93,9 @@ export default function AddTask() {
                         <div className="pr-2 flex justify-between items-center ">
                           <h2 className="font-bold text-lg dark:text-white">Add new task</h2>
                         </div>
-                        <div className="overflow-y-scroll h-[32rem] md:h-fit">
+                        <div className="">
                           <div className="mt-4 space-y-4">
-                            <CustomInput2
-                              type="text"
-                              name="taskTitle"
-                              label="Title"
-                              className="border border-gray-400 h-9 px-4"
-                            />
+                            <CustomInput2 type="text" name="taskTitle" label="Title" />
                             <CustomTextArea
                               name="taskDesc"
                               label="Description"
@@ -116,7 +111,7 @@ export default function AddTask() {
                                   </span>
                                 )}
                               </h2>
-                              <div className=" flex flex-col  space-y-3 justify-center items-center pr-2">
+                              <div className="max-h-20 pt-4 md:max-h-24  overflow-y-auto flex flex-col  space-y-3 justify-center items-center pr-2">
                                 {props.values.subtasks.map((subtask) => (
                                   <Fragment key={subtask.id}>
                                     <div className="w-full flex space-x-3 items-center">
@@ -152,23 +147,15 @@ export default function AddTask() {
 
                               <button
                                 type="button"
-                                disabled={props.values.subtasks.length === 14}
                                 onClick={() => {
-                                  if (props.values.subtasks.length === 3) {
-                                    props.setFieldError(
-                                      "subtasks",
-                                      "Can't add more than 3 subtasks"
-                                    );
-                                  } else {
-                                    props.setFieldValue(
-                                      "subtasks",
-                                      props.values.subtasks.concat({
-                                        id: v4(),
-                                        title: "",
-                                        isCompleted: false,
-                                      })
-                                    );
-                                  }
+                                  props.setFieldValue(
+                                    "subtasks",
+                                    props.values.subtasks.concat({
+                                      id: v4(),
+                                      title: "",
+                                      isCompleted: false,
+                                    })
+                                  );
                                 }}
                                 className="disabled:bg-teal-700 disabled:text-white w-full bg-[#635FC71A] dark:bg-white font-semibold hover:bg-[#2f2e6240] py-2 rounded-full text-[#635FC7]"
                               >

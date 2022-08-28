@@ -59,20 +59,20 @@ export default function Sidebar() {
       <AddBoard open={openModal} setOpen={setOpenModal} />
       <div
         className={clsx(
-          "hidden md:flex z-[100] transition-all duration-500 fixed inset-y-0 h-full  flex-col lg:w-[22%] w-[32%]",
+          "hidden md:flex z-[100] transition-all duration-500 fixed inset-y-0 h-full  flex-col lg:w-[22%] w-[32%] overflow-y-hidden",
           sidebar === "show"
             ? "z-40 translate-x-0 opacity-100"
             : "-translate-x-[100%] -z-10 opacity-0"
         )}
       >
-        <div className="pb-12 border-r dark:border-r-[#272832] pt-0 flex flex-col flex-grow dark:bg-[#2B2C37] bg-white overflow-y-auto">
+        <div className="pb-12 border-r dark:border-r-[#272832] pt-0 flex flex-col flex-grow dark:bg-[#2B2C37] bg-white overflow-y-hidden">
           <Logo />
           <div className="flex-grow mt-5 flex flex-col ">
             <nav className="flex-1 pr-2 pb-4">
               <div className="ml-4 py-4 text-[0.9375rem] text-medium-grey dark:text-[#828FA3] tracking-wide font-semibold opacity-50">
                 All BOARDS ({boards.length})
               </div>
-              <ul className=" max-h-72 overflow-y-scroll">
+              <ul className=" max-h-72 overflow-y-auto">
                 {boards.map((board) => (
                   <NavLink
                     to={`/boards/${board.id}`}
