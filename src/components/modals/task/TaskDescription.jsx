@@ -1,11 +1,11 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment, useContext, useMemo, useState} from "react";
+import {Fragment, useContext, useMemo} from "react";
 import clsx from "clsx";
 import {Dialog, Transition} from "@headlessui/react";
 import {Formik, Form} from "formik";
-import {useLocation} from "react-router-dom";
+
 import SelectMenu from "./SelectMenu";
-import {useSelector, useDispatch} from "react-redux";
+import {useDispatch} from "react-redux";
 import TaskDropDown from "../../dropdown/Task";
 import {editTask} from "../../../store/features/boards";
 import {BoardContext} from "../../../App";

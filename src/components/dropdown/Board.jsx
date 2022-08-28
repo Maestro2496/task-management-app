@@ -2,9 +2,8 @@
 import {Fragment, useContext} from "react";
 import {Menu, Transition} from "@headlessui/react";
 import {DotsVerticalIcon} from "@heroicons/react/solid";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {showDeleteBoard, showEditBoard} from "../../store/features/modals";
-import {useLocation} from "react-router-dom";
 import {BoardContext} from "../../App";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");

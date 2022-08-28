@@ -8,8 +8,8 @@ import {CustomInput2} from "../../Input";
 import CustomTextArea from "../../TextArea";
 import {XIcon} from "@heroicons/react/outline";
 import SubTask from "./SubTask";
-import {useLocation} from "react-router-dom";
-import {useSelector, useDispatch} from "react-redux";
+
+import {useDispatch} from "react-redux";
 import {editTask} from "../../../store/features/boards";
 import {BoardContext} from "../../../App";
 export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {

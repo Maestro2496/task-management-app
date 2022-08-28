@@ -1,7 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
 import {Fragment, useContext, useRef} from "react";
 import {Dialog, Transition} from "@headlessui/react";
-import {useLocation} from "react-router-dom";
+
 import {useDispatch} from "react-redux";
 import {deleteTask} from "../../../store/features/boards";
 import {BoardContext} from "../../../App";

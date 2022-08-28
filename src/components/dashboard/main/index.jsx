@@ -2,7 +2,6 @@ import clsx from "clsx";
 import React, {useCallback, useContext, useMemo, useState} from "react";
 import TaskDescription from "../../modals/task/TaskDescription";
 import {useSelector, useDispatch} from "react-redux";
-import {useLocation, useParams} from "react-router-dom";
 
 import EditTask from "../../modals/task/EditTask";
 import DeleteTask from "../../modals/task/DeleteTask";

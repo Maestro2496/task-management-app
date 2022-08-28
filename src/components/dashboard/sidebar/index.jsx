@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {NavLink, useLocation} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import "./Sidebar.scss";
 import AddBoard from "../../modals/board/AddBoard";
 import {useDispatch} from "react-redux/";
