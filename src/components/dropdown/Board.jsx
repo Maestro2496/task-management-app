@@ -1,21 +1,26 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment} from "react";
+import {Fragment, useContext} from "react";
 import {Menu, Transition} from "@headlessui/react";
 import {DotsVerticalIcon} from "@heroicons/react/solid";
 import {useDispatch, useSelector} from "react-redux";
 import {showDeleteBoard, showEditBoard} from "../../store/features/modals";
+import {useLocation} from "react-router-dom";
+import {BoardContext} from "../../App";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function BoardDropDown() {
   const dispatch = useDispatch();
-  const open = useSelector((state) => state.modals.board.edit);
-  console.log({open});
+
+  const board = useContext(BoardContext);
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="rounded-full flex items-center text-gray-400 hover:text-gray-600 ">
+        <Menu.Button
+          disabled={!board}
+          className="disabled:opacity-20 rounded-full flex items-center text-gray-400 hover:text-gray-600 "
+        >
           <span className="sr-only">Open options</span>
           <DotsVerticalIcon className="h-5 w-5" aria-hidden="true" />
         </Menu.Button>
@@ -48,7 +53,9 @@ export default function BoardDropDown() {
             <Menu.Item>
               {({active}) => (
                 <button
-                  onClick={() => void dispatch(showDeleteBoard())}
+                  onClick={() => {
+                    dispatch(showDeleteBoard());
+                  }}
                   className={classNames(
                     active ? "bg-gray-100 dark:bg-inherit text-red-900" : "text-red-700",
                     "w-full text-left block px-4 py-2 text-sm"

@@ -35,7 +35,7 @@ export function CustomInput2({label, ...props}) {
           {...props}
           className={clsx(
             "bg-inherit relative w-full border dark:text-white rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1  sm:text-sm",
-            props.className,
+           
             meta.touched && meta.error
               ? "border-red-500 animate-pulse focus:ring-red-500 focus:border-red-500"
               : "border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"

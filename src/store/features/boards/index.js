@@ -15,9 +15,9 @@ const boardReducer = createSlice({
       boards.push({id, name: boardName, href, columns});
     },
     editBoard: (boards, action) => {
-      const {boardHref, boardName, columns} = action.payload;
+      const {boardId, boardName, columns} = action.payload;
       const newBoards = boards.map((board) => {
-        if (board.href === boardHref) {
+        if (board.id === boardId) {
           return {
             ...board,
             name: boardName,
@@ -30,9 +30,9 @@ const boardReducer = createSlice({
       return newBoards;
     },
     addColumn: (boards, action) => {
-      const {boardHref, columnName} = action.payload;
+      const {boardId, columnName} = action.payload;
       //Find the board
-      const board = boards.find((board) => board.href === boardHref);
+      const board = boards.find((board) => board.id === boardId);
       //Add a new column
       board.columns.push({id: v4(), name: columnName, tasks: []});
     },
@@ -63,9 +63,9 @@ const boardReducer = createSlice({
       return newBoard;
     },
     addTask: (boards, action) => {
-      const {boardHref, status, taskTitle, taskDesc, subtasks} = action.payload;
+      const {boardId, status, taskTitle, taskDesc, subtasks} = action.payload;
       //Find the board
-      const board = boards.find((board) => board.href === boardHref);
+      const board = boards.find((board) => board.id === boardId);
       //Find the column
       const column = board.columns.find((column) => column.name === status);
 
@@ -73,11 +73,11 @@ const boardReducer = createSlice({
       column.tasks.push({title: taskTitle, description: taskDesc, status: column.name, subtasks});
     },
     editTask: (boards, action) => {
-      const {boardHref, currentColName, taskId, taskTitle, taskDesc, subtasks, prevColName} =
+      const {boardId, currentColName, taskId, taskTitle, taskDesc, subtasks, prevColName} =
         action.payload;
-      
+
       //Find the board
-      const board = boards.find((board) => board.href === boardHref);
+      const board = boards.find((board) => board.id === boardId);
 
       //Find the prevColumn
       const prevColumn = board.columns.find((column) => column.name === prevColName);
@@ -97,7 +97,6 @@ const boardReducer = createSlice({
           return task;
         });
       } else {
-        console.log('Here')
         //Add the task to the new column and delete from the prev
         currentColumn.tasks.push({
           id: taskId,
@@ -110,9 +109,9 @@ const boardReducer = createSlice({
       }
     },
     deleteTask: (boards, action) => {
-      const {boardHref, columnName, taskId} = action.payload;
+      const {boardId, columnName, taskId} = action.payload;
       //Find the board
-      const board = boards.find((board) => board.href === boardHref);
+      const board = boards.find((board) => board.id === boardId);
       //Find the column
       const column = board.columns.find((column) => column.name === columnName);
 

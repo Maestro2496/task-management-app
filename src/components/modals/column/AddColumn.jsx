@@ -1,15 +1,15 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment, useState} from "react";
+import {Fragment, useContext, useState} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux/";
 import {addColumn} from "../../../store/features/boards";
 import {hideAddColumn} from "../../../store/features/modals";
+import {BoardContext} from "../../../App";
 export default function AddColumn() {
   const [name, setName] = useState("");
   const dispatch = useDispatch();
-  const location = useLocation();
-  const boardHref = location.pathname.split("/")[2];
+  const board = useContext(BoardContext);
   const open = useSelector((state) => state.modals.column.add);
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -42,7 +42,7 @@ export default function AddColumn() {
                   className="flex flex-col space-y-3 justify-center items-center"
                   onSubmit={(event) => {
                     event.preventDefault();
-                    dispatch(addColumn({boardHref, columnName: name}));
+                    dispatch(addColumn({boardId: board.id, columnName: name}));
                     dispatch(hideAddColumn());
                   }}
                 >

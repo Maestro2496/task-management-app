@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment, useMemo} from "react";
+import {Fragment, useContext, useMemo} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {XIcon} from "@heroicons/react/outline";
 import {useSelector, useDispatch} from "react-redux/";
@@ -11,16 +11,11 @@ import {hideEditBoard} from "../../../store/features/modals";
 import ColumnInput from "./ColumnInput";
 import {v4} from "uuid";
 import {editBoard} from "../../../store/features/boards";
+import {BoardContext} from "../../../App";
+
 export default function EditBoard() {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const boardHref = location.pathname.split("/")[2];
-  const boards = useSelector((state) => state.boards);
-  const board = useMemo(() => {
-    const board = boards.find((board) => board.href === boardHref);
-    if (board) return board;
-    return null;
-  }, [boardHref, boards]);
+  const board = useContext(BoardContext);
 
   const initialValues = useMemo(() => {
     return {
@@ -45,7 +40,7 @@ export default function EditBoard() {
         </Transition.Child>
 
         <div className="fixed z-10 inset-0 ">
-          <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+          <div className="flex items-center sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-500"
@@ -59,9 +54,12 @@ export default function EditBoard() {
                 <Formik
                   initialValues={initialValues}
                   onSubmit={(values) => {
-                    console.log(values);
                     dispatch(
-                      editBoard({boardHref, boardName: values.boardName, columns: values.columns})
+                      editBoard({
+                        boardId: board.id,
+                        boardName: values.boardName,
+                        columns: values.columns,
+                      })
                     );
                   }}
                 >

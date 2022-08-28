@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment, useMemo, useState} from "react";
+import {Fragment, useContext, useMemo, useState} from "react";
 import clsx from "clsx";
 import {Dialog, Transition} from "@headlessui/react";
 import {Formik, Form} from "formik";
@@ -8,21 +8,20 @@ import SelectMenu from "./SelectMenu";
 import {useSelector, useDispatch} from "react-redux";
 import TaskDropDown from "../../dropdown/Task";
 import {editTask} from "../../../store/features/boards";
+import {BoardContext} from "../../../App";
 
 export default function TaskDescription({open, setOpen, task, setOpenEditTask, setOpenDeleteTask}) {
-  const location = useLocation();
   const dispatch = useDispatch();
-  const boardHref = location.pathname.split("/")[2];
-  const boards = useSelector((state) => state.boards);
-  const [hasChanged, setHasChanged] = useState(false);
+  const board = useContext(BoardContext);
+
   const taskStatus = useMemo(() => {
     let status = [];
-    const board = boards.find((board) => board.href === boardHref);
+
     if (board) {
       status = board.columns.map((column) => column.name);
     }
     return status;
-  }, [boards, boardHref]);
+  }, [board]);
 
   const initialValues = useMemo(() => {
     return {
@@ -63,7 +62,7 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
                     onSubmit={(values) => {
                       dispatch(
                         editTask({
-                          boardHref,
+                          boardId: board.id,
                           currentColName: values.status,
                           taskId: task.id,
                           taskTitle: task.title,
@@ -106,7 +105,6 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
                                       name={subtask.title}
                                       defaultChecked={subtask.isCompleted}
                                       onChange={(event) => {
-                                        setHasChanged(true);
                                         if (event.target.checked) {
                                           setFieldValue(
                                             "subtasks",
@@ -161,7 +159,6 @@ export default function TaskDescription({open, setOpen, task, setOpenEditTask, s
                               currentStatus={task.status}
                               taskStatus={taskStatus}
                               setFieldValue={setFieldValue}
-                              setHasChanged={setHasChanged}
                             />
                           </div>
 

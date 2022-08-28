@@ -1,14 +1,21 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment, useRef} from "react";
+import {Fragment, useCallback, useContext, useRef} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 
 import {useSelector, useDispatch} from "react-redux";
 import {hideDeleteBoard} from "../../../store/features/modals";
+import {deleteBoard} from "../../../store/features/boards";
+import {useLocation, useNavigate} from "react-router-dom";
+import {BoardContext} from "../../../App";
 export default function DeleteBoard() {
   const open = useSelector((state) => state.modals.board.delete);
   const dispatch = useDispatch();
+  const board = useContext(BoardContext);
   const cancelButtonRef = useRef(null);
-
+  const navigate = useNavigate();
+  const swicthToIndex = useCallback(() => {
+    navigate("/", {replace: true});
+  }, [navigate]);
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -30,7 +37,7 @@ export default function DeleteBoard() {
         </Transition.Child>
 
         <div className="fixed z-10 inset-0 overflow-y-auto">
-          <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+          <div className="flex items-center justify-center min-h-full p-4 text-center sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-500"
@@ -57,18 +64,22 @@ export default function DeleteBoard() {
                     </div>
                   </div>
                 </div>
-                <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                <div className=" mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
                   <button
                     type="button"
-                    className="w-full dark:bg-white inline-flex justify-center rounded-full border border-transparent shadow-sm px-4 py-2 text-base font-medium text-indigo-800 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+                    className="w-full bg-[#635FC71A] dark:bg-white inline-flex justify-center rounded-full border border-transparent shadow-sm px-4 py-2 text-base font-medium text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
                     onClick={() => void dispatch(hideDeleteBoard())}
                   >
                     Cancel
                   </button>
                   <button
                     type="button"
-                    className="dark:bg-[#EA5555] text-white mt-3 w-full inline-flex justify-center rounded-full  shadow-sm px-4 py-2 bg-white text-base font-medium  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-                    onClick={() => void dispatch(hideDeleteBoard())}
+                    className="bg-[#EA5555] text-white mt-3 w-full inline-flex justify-center rounded-full  shadow-sm px-4 py-2  text-base font-medium  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
+                    onClick={() => {
+                      dispatch(hideDeleteBoard());
+                      swicthToIndex();
+                      dispatch(deleteBoard({boardId: board.id}));
+                    }}
                     ref={cancelButtonRef}
                   >
                     Delete

@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment, useMemo} from "react";
+import {Fragment, useContext, useMemo} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {Formik, Form} from "formik";
 import SelectMenu from "./SelectMenu";
@@ -11,20 +11,18 @@ import SubTask from "./SubTask";
 import {useLocation} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 import {editTask} from "../../../store/features/boards";
+import {BoardContext} from "../../../App";
 export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
-  const location = useLocation();
-  const boards = useSelector((state) => state.boards);
-  const boardHref = location.pathname.split("/")[2];
+  const board = useContext(BoardContext);
 
   const taskStatus = useMemo(() => {
     let status = [];
 
-    const board = boards.find((board) => board.href === boardHref);
     if (board) {
       status = board.columns.map((column) => column.name);
     }
     return status;
-  }, [boards, boardHref]);
+  }, [board]);
 
   const dispatch = useDispatch();
   const initialValues = useMemo(() => {
@@ -75,7 +73,7 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
                   onSubmit={(values) => {
                     dispatch(
                       editTask({
-                        boardHref,
+                        boardId: board.id,
                         status: values.status,
                         taskId: task.id,
                         taskTitle: values.title,
@@ -88,7 +86,7 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
                     setOpen(false);
                   }}
                 >
-                  {({values, setFieldValue, setFieldError,errors}) => (
+                  {({values, setFieldValue, setFieldError, errors}) => (
                     <Form>
                       <div className="pr-2 flex justify-between items-center ">
                         <h2 className="font-bold text-lg dark:text-white">Edit task</h2>
@@ -110,9 +108,7 @@ export default function EditTask({open, setOpen, setOpenTaskDesc, task}) {
                           <h2 className="dark:text-white text-medium-grey font-semibold">
                             Subtasks{" "}
                             {errors.subtasks && (
-                              <span className="ml-2 text-sm text-red-500">
-                                {errors.subtasks}
-                              </span>
+                              <span className="ml-2 text-sm text-red-500">{errors.subtasks}</span>
                             )}
                           </h2>
                           {values.subtasks.map((subtask) => (

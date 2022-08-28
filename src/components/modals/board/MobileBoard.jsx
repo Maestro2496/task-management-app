@@ -53,12 +53,12 @@ export default function MobileBoard() {
                       <div className="ml-4 py-1 mb-2 text-sm font-semibold tracking-wider text-[#828FA3]">
                         ALL BOARDS ({boards.length})
                       </div>
-                      <ul className="">
+                      <ul className=" max-h-32 overflow-y-scroll">
                         {boards.map((board) => (
                           <NavLink
                             to={`/boards/${board.href}`}
-                            key={board.name}
-                            href={board.name}
+                            key={board?.name}
+                            href={board?.name}
                             className={({isActive}) => {
                               return (
                                 " group rounded-r-full py-3 px-4 flex items-center text-sm font-medium space-x-3 text-black hover:text-gray-900 " +
@@ -80,7 +80,7 @@ export default function MobileBoard() {
                                   : "text-[#828FA3]"
                               )}
                             >
-                              {board.name}
+                              {board?.name}
                             </p>
                           </NavLink>
                         ))}

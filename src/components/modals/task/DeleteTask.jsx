@@ -1,15 +1,16 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment, useRef} from "react";
+import {Fragment, useContext, useRef} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {useLocation} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {deleteTask} from "../../../store/features/boards";
+import {BoardContext} from "../../../App";
 
 export default function DeleteTask({open, setOpen, setOpenTaskDesc, task}) {
   const cancelButtonRef = useRef(null);
   const location = useLocation();
   const dispatch = useDispatch();
-  const boardHref = location.pathname.split("/")[2];
+  const board = useContext(BoardContext);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -64,7 +65,6 @@ export default function DeleteTask({open, setOpen, setOpenTaskDesc, task}) {
                 </div>
                 <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
                   <button
-                   
                     type="button"
                     className="w-full bg-[#635FC71A]/10 inline-flex justify-center rounded-full border border-transparent shadow-sm px-4 py-2 text-base font-medium text-[#635FC7] hover:bg-indigo-700 dark:bg-white sm:col-start-2 sm:text-sm"
                     onClick={() => {
@@ -80,7 +80,7 @@ export default function DeleteTask({open, setOpen, setOpenTaskDesc, task}) {
                     onClick={() => {
                       dispatch(
                         deleteTask({
-                          boardHref,
+                          boardId: board.id,
                           columnName: task.status,
                           taskId: task.id,
                         })

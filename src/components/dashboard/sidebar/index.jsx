@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {NavLink, useLocation} from "react-router-dom";
 import "./Sidebar.scss";
 import AddBoard from "../../modals/board/AddBoard";
@@ -13,6 +13,7 @@ import HideSidebar from "../../../assets/HideSidebar";
 import LogoDark from "../../../assets/LogoDark";
 import {hide} from "../../../store/features/sidebar";
 import LogoLight from "../../../assets/LogoLight";
+import {BoardContext} from "../../../App";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -50,8 +51,8 @@ export default function Sidebar() {
   const [openModal, setOpenModal] = useState(false);
   const sidebar = useSelector((state) => state.sidebar);
   let boards = useSelector((state) => state.boards);
-
-  const location = useLocation();
+  const board = useContext(BoardContext);
+  const boardId = board ? board.id : undefined;
 
   return (
     <>
@@ -71,15 +72,12 @@ export default function Sidebar() {
               <div className="ml-4 py-4 text-[0.9375rem] text-medium-grey dark:text-[#828FA3] tracking-wide font-semibold opacity-50">
                 All BOARDS ({boards.length})
               </div>
-              <ul className="">
+              <ul className=" max-h-72 overflow-y-scroll">
                 {boards.map((board) => (
                   <NavLink
-                    to={`/boards/${board.href}`}
-                    key={board.name}
-                    href={board.name}
-                    /*  style={({isActive}) => ({
-                  backgroundColor: isActive ? "lightblue" : "teal",
-                })} */
+                    to={`/boards/${board.id}`}
+                    key={board?.name}
+                    href={board?.name}
                     className={({isActive}) => {
                       return (
                         " group rounded-r-full py-5 px-4 flex items-center text-sm font-medium space-x-3 text-black hover:text-gray-900 " +
@@ -87,19 +85,14 @@ export default function Sidebar() {
                       );
                     }}
                   >
-                    <Iconboard
-                      fill={board.href === location.pathname.split("/")[2] ? "white" : "gray"}
-                      aria-hidden="true"
-                    />
+                    <Iconboard fill={board.id === boardId ? "white" : "gray"} aria-hidden="true" />
                     <p
                       className={clsx(
                         "text-[0.9375rem]",
-                        board.href === location.pathname.split("/")[2]
-                          ? "text-white"
-                          : "text-gray-900 dark:text-[#828FA3]"
+                        board.id === boardId ? "text-white" : "text-gray-900 dark:text-[#828FA3]"
                       )}
                     >
-                      {board.name}
+                      {board?.name}
                     </p>
                   </NavLink>
                 ))}

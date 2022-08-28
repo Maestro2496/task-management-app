@@ -1,8 +1,9 @@
 import {ChevronDownIcon, PlusCircleIcon, PlusIcon} from "@heroicons/react/solid";
 import clsx from "clsx";
-import React from "react";
+import React, {useContext} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {useLocation} from "react-router-dom";
+import {BoardContext} from "../../../App";
 import LogoDark from "../../../assets/LogoDark";
 import LogoLight from "../../../assets/LogoLight";
 import LogoMobile from "../../../assets/LogoMobile";
@@ -34,11 +35,13 @@ export default function Header() {
   const sidebar = useSelector((state) => state.sidebar);
 
   const location = useLocation();
+  const board = useContext(BoardContext);
+
   return (
     <>
       <AddTask />
       <EditBoard />
-      <DeleteBoard/>
+      <DeleteBoard />
       <div
         className={clsx(
           "hidden pr-4  transition-all duration-500 border-b border-3 dark:border-b-[#2b2c35] bg-white dark:bg-[#2B2C37] z-40 fixed right-0 left-0 h-[6.1rem]   md:flex items-center justify-between"
@@ -53,7 +56,7 @@ export default function Header() {
         >
           <Logo />
           <span className="border-l-gray-300 dark:border-l-gray-700 dark:text-white border-l h-full flex items-center justify-center pl-6">
-            {location.pathname.split("/")[2]}
+            {board?.name}
           </span>
         </div>
 
@@ -65,13 +68,17 @@ export default function Header() {
           )}
         >
           <span className="dark:text-white pl-3  h-full flex items-center justify-center">
-            {location.pathname.split("/")[2]}
+            {board?.name}
           </span>
         </div>
         <div className="flex space-x-6 items-center justify-center ">
           <button
-            onClick={() => void dispatch(showAddTask())}
-            className="rounded-full py-3 px-6 bg-[#635FC7] hover:opacity-50  text-white"
+            onClick={() => {
+              if (!board) return;
+              dispatch(showAddTask());
+            }}
+            disabled={!board || board.columns.length === 0}
+            className="disabled:opacity-20 rounded-full py-3 px-6 bg-[#635FC7] hover:opacity-50  text-white"
           >
             + Add New Task
           </button>
@@ -87,7 +94,13 @@ export default function Header() {
           <MobileBoard />
         </div>
         <div className="flex justify-center items-center space-x-2">
-          <PlusIcon className="w-10 h-6 bg-primary fill-white rounded-full " />
+          <PlusIcon
+            className={clsx("w-10 h-6 bg-primary fill-white rounded-full", !board && "opacity-20")}
+            onClick={() => {
+              if (!board) return;
+              dispatch(showAddTask());
+            }}
+          />
           <BoardDropDown />
         </div>
       </div>

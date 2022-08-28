@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, {useCallback, useMemo, useState} from "react";
+import React, {useCallback, useContext, useMemo, useState} from "react";
 import TaskDescription from "../../modals/task/TaskDescription";
 import {useSelector, useDispatch} from "react-redux";
 import {useLocation, useParams} from "react-router-dom";
@@ -8,7 +8,8 @@ import EditTask from "../../modals/task/EditTask";
 import DeleteTask from "../../modals/task/DeleteTask";
 import AddColumn from "../../modals/column/AddColumn";
 import {showAddColumn} from "../../../store/features/modals";
-import {editTask} from "../../../store/features/boards";
+import {addColumn, editTask} from "../../../store/features/boards";
+import {BoardContext} from "../../../App";
 
 const Task = ({task}) => {
   const [openTaskDesc, setOpenTaskDesc] = useState(false);
@@ -69,20 +70,15 @@ const Task = ({task}) => {
 export default function TaskBoard() {
   const sidebar = useSelector((state) => state.sidebar);
   const dispatch = useDispatch();
-  const params = useParams();
-  let boards = useSelector((state) => state.boards);
-  const location = useLocation();
-  const boardHref = location.pathname.split("/")[2];
-  const board = useMemo(() => {
-    return boards.find((board) => board.href === params.boardId);
-  }, [boards, params.boardId]);
+  const board = useContext(BoardContext);
+  console.log({board});
   const onDrop = useCallback(
     (event, currentColName) => {
       const task = JSON.parse(event.dataTransfer.getData("application/json"));
 
       dispatch(
         editTask({
-          boardHref,
+          boardId: board.id,
           prevColName: task.status,
           currentColName,
           taskId: task.id,
@@ -92,7 +88,7 @@ export default function TaskBoard() {
         })
       );
     },
-    [boardHref, dispatch]
+    [board, dispatch]
   );
   return (
     <>
@@ -103,42 +99,56 @@ export default function TaskBoard() {
           sidebar === "show" ? "lg:ml-[22%] md:ml-[32%] md:pl-8" : " md:pl-12"
         )}
       >
-        {board.columns.map((column) => {
-          return (
-            <div
-              onDrop={(event) => onDrop(event, column.name)}
-              onDragOver={(e) => e.preventDefault()}
-              key={column.name}
-              className=" w-[16rem] md:w-[22rem] h-[85%] rounded-md md:p-4 flex flex-col justify-center items-center space-y-4 bg-transparent "
-            >
-              <div className="w-full flex space-x-3 justify-start items-center pl-2 ">
-                <div className="rounded-full w-3 h-3 bg-teal-500" />
-                <span className="dark:text-[#828FA3]">{`${column.name} (${column.tasks.length})`}</span>
-              </div>
-              {column.tasks.length === 0 ? (
-                <div className=" rounded-md flex flex-col space-y-4 items-center justify-center h-[38rem] p-2 w-full dark:text-white">
-                  <p>This column has no task</p>
-                  <button className="bg-primary p-2 rounded-md text-white">Add a task</button>
+        {board.columns.length > 0 ? (
+          <>
+            {board.columns.map((column) => {
+              return (
+                <div
+                  onDrop={(event) => onDrop(event, column.name)}
+                  onDragOver={(e) => e.preventDefault()}
+                  key={column.name}
+                  className=" w-[16rem] md:w-[22rem] h-[85%] rounded-md md:p-4 flex flex-col justify-center items-center space-y-4 bg-transparent "
+                >
+                  <div className="w-full flex space-x-3 justify-start items-center pl-2 ">
+                    <div className="rounded-full w-3 h-3 bg-teal-500" />
+                    <span className="dark:text-[#828FA3]">{`${column.name} (${column.tasks.length})`}</span>
+                  </div>
+                  {column.tasks.length === 0 ? (
+                    <div className=" rounded-md flex flex-col space-y-4 items-center justify-start h-[38rem] p-2 w-full dark:text-white"></div>
+                  ) : (
+                    <div className=" rounded-md flex flex-col space-y-3 overflow-y-scroll h-[38rem] p-2 w-full">
+                      {column.tasks.map((task) => (
+                        <Task key={task.id} task={task} />
+                      ))}
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className=" rounded-md flex flex-col space-y-3 overflow-y-scroll h-[38rem] p-2 w-full">
-                  {column.tasks.map((task) => (
-                    <Task key={task.id} task={task} />
-                  ))}
-                </div>
-              )}
+              );
+            })}
+            <div className="w-[16rem] md:w-[22rem] h-[85%] bg-[#E4EBFA] dark:bg-[#20212C] rounded-md md:p-4 flex flex-col justify-center items-center space-y-4 bg-transparent ">
+              <button
+                onClick={() => dispatch(showAddColumn())}
+                className=" mt- w-full md:h-[36.5rem] flex justify-center items-center dark:text-[#828FA3]"
+              >
+                + New Column
+              </button>
             </div>
-          );
-        })}
-
-        <div className="w-[16rem] md:w-[22rem] h-[85%] bg-[#E4EBFA] dark:bg-[#20212C] rounded-md md:p-4 flex flex-col justify-center items-center space-y-4 bg-transparent ">
-          <button
-            onClick={() => dispatch(showAddColumn())}
-            className=" mt- w-full md:h-[36.5rem] flex justify-center items-center dark:text-[#828FA3]"
-          >
-            + New Column
-          </button>
-        </div>
+          </>
+        ) : (
+          <div className="flex flex-col items-center justify-center relative left-[90%] space-y-3">
+            <p>This board is empty. Create a column to get started.</p>
+            <button
+              onClick={() => {
+                dispatch(addColumn({boardId: board.id, columnName: "Todo"}));
+                dispatch(addColumn({boardId: board.id, columnName: "Doing"}));
+                dispatch(addColumn({boardId: board.id, columnName: "Done"}));
+              }}
+              className="bg-primary-hover px-4 py-2 text-white rounded-full"
+            >
+              + Add columns
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

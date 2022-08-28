@@ -94,14 +94,10 @@ export default function AddBoard({open, setOpen}) {
                                 />
                                 <XIcon
                                   onClick={() => {
-                                    if (values.columns.length === 1) {
-                                      setFieldError("columns", "You need at least one column");
-                                    } else {
-                                      setFieldValue(
-                                        "columns",
-                                        values.columns.filter((col) => col.id !== column.id)
-                                      );
-                                    }
+                                    setFieldValue(
+                                      "columns",
+                                      values.columns.filter((col) => col.id !== column.id)
+                                    );
                                   }}
                                   className="hover:fill-teal-300 w-6 h-6 stroke-medium-grey"
                                 />
