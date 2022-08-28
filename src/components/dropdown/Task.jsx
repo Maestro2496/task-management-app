@@ -9,7 +9,7 @@ function classNames(...classes) {
 
 export default function TaskDropDown({setOpenEditTask, setOpenDeleteTask, setOpenTaskDesc}) {
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className="relative z-50 inline-block text-left">
       <div>
         <Menu.Button className=" rounded-full flex items-center text-gray-400 hover:text-gray-600 ">
           <span className="sr-only">Open options</span>
