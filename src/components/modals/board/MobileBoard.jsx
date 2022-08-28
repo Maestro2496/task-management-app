@@ -1,12 +1,12 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment, useMemo, useState} from "react";
+import {Fragment, useState} from "react";
 import {Dialog, Transition} from "@headlessui/react";
-import {XIcon} from "@heroicons/react/outline";
+
 import {useSelector, useDispatch} from "react-redux/";
 
 import {NavLink, useLocation} from "react-router-dom";
 
-import {hideMobile, showAddBoard} from "../../../store/features/modals";
+import {hideMobile} from "../../../store/features/modals";
 
 import Iconboard from "../../../assets/IconBoard";
 import clsx from "clsx";

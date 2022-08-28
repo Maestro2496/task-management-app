@@ -3,10 +3,9 @@ import {Fragment, useContext, useMemo} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {XIcon} from "@heroicons/react/outline";
 import {useSelector, useDispatch} from "react-redux/";
-import {CustomInput1, CustomInput2} from "../../Input";
+import {CustomInput2} from "../../Input";
 import {Formik, Form} from "formik";
-import {useLocation} from "react-router-dom";
-import SubTask from "../../SubTask";
+
 import {hideEditBoard} from "../../../store/features/modals";
 import ColumnInput from "./ColumnInput";
 import {v4} from "uuid";

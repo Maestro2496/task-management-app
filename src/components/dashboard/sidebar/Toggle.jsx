@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {useContext, useEffect, useState} from "react";
+import {useContext} from "react";
 import {Switch} from "@headlessui/react";
 import {LightContext} from "../../../App";
 

@@ -1,7 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
 import {Fragment, useContext, useState} from "react";
 import {Dialog, Transition} from "@headlessui/react";
-import {useLocation} from "react-router-dom";
+
 import {useDispatch, useSelector} from "react-redux/";
 import {addColumn} from "../../../store/features/boards";
 import {hideAddColumn} from "../../../store/features/modals";

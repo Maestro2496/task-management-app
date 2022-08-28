@@ -5,7 +5,7 @@ import {Dialog, Transition} from "@headlessui/react";
 import {useSelector, useDispatch} from "react-redux";
 import {hideDeleteBoard} from "../../../store/features/modals";
 import {deleteBoard} from "../../../store/features/boards";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {BoardContext} from "../../../App";
 export default function DeleteBoard() {
   const open = useSelector((state) => state.modals.board.delete);
